@@ -1,4 +1,4 @@
-# RefreshAnalysisServices 
+# AnalysisServicesRefresh
 
 C# .NET Framework console application to refresh an Azure Analysis Services model based on a JSON configuration, using the [Tabular Object Model](https://docs.microsoft.com/en-us/bi-reference/tom/introduction-to-the-tabular-object-model-tom-in-analysis-services-amo) API allowing for:
 1. Full refresh of tables.
