@@ -8,6 +8,11 @@ C# .NET Framework console application to refresh an Azure Analysis Services mode
 
 The application can be executed standalone, or the JSON configuration structure allows for execution from Azure Data Factory v2 using a [Custom Activity](https://docs.microsoft.com/en-us/azure/data-factory/transform-data-using-dotnet-custom-activity).
 
+## Transactional Processing
+Setting "modelProcessorType" in the JSON configuration:
+- To "Transactional": if a failure occurs during processing, no changes are committed to the model and an exception is thrown.
+- To "NonTransactional": if a failure occurs during processing a table, the next table will be attempted until all are attempted. If any table fails, an exception is thrown after processing indicating which have failed. The data source is renewed for each table, allowing in the case of OAuth, for longer processing time before token timeout.
+
 ## Full Refresh
 
 Any tables listed in "fullTables" in the JSON configuration will be fully processed.
@@ -60,6 +65,7 @@ in
       "keyVaultAuthentication": "ActiveDirectoryClientCertificateThumbprintForKeyVault",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
+	  "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
@@ -140,6 +146,7 @@ in
       "keyVaultAuthentication": "ActiveDirectoryClientSecretForKeyVault",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
+	  "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
@@ -220,6 +227,7 @@ in
       "keyVaultAuthentication": null,
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
+	  "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
@@ -300,6 +308,7 @@ in
       "keyVaultAuthentication": null,
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
+	  "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
