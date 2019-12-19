@@ -65,7 +65,7 @@ in
       "keyVaultAuthentication": "ActiveDirectoryClientCertificateThumbprintForKeyVault",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
-	  "modelProcessorType": "Transactional",
+      "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
@@ -146,7 +146,7 @@ in
       "keyVaultAuthentication": "ActiveDirectoryClientSecretForKeyVault",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
-	  "modelProcessorType": "Transactional",
+      "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
@@ -227,7 +227,7 @@ in
       "keyVaultAuthentication": null,
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
-	  "modelProcessorType": "Transactional",
+      "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
@@ -308,7 +308,7 @@ in
       "keyVaultAuthentication": null,
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
-	  "modelProcessorType": "Transactional",
+      "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
           "name": "F Stock",
