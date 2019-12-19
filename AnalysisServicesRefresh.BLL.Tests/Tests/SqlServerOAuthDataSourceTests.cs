@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.BLL;
+﻿using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices;
@@ -10,12 +6,15 @@ using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using Partition = AnalysisServicesRefresh.BLL.Models.PartitionConfiguration;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {
     [TestClass]
-    public class SqlServerOAuthDataSourceProcessorTests
+    public class SqlServerOAuthDataSourceTests
     {
         private ModelConfiguration _configuration;
         private Mock<IDatabaseWrapper> _database;
@@ -23,7 +22,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         private Mock<IDataSourceCollectionWrapper> _dataSourceCollection;
         private Mock<ILogger> _logger;
         private Mock<IModelWrapper> _model;
-        private SqlServerOAuthDataSourceProcessor _sut;
+        private SqlServerOAuthDataSource _sut;
         private Mock<ITokenProvider> _tokenProvider;
         private Mock<ITokenProviderFactory> _tokenProviderFactory;
 
@@ -69,7 +68,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _database = new Mock<IDatabaseWrapper>();
             _database.Setup(x => x.Model).Returns(_model.Object);
 
-            _sut = new SqlServerOAuthDataSourceProcessor(_tokenProviderFactory.Object, _logger.Object);
+            _sut = new SqlServerOAuthDataSource(_tokenProviderFactory.Object, _logger.Object);
         }
 
         [TestMethod]
@@ -82,7 +81,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public async Task TestInvalidDataSourceInDatabaseThrowsConnectionException()
         {
-            _dataSourceCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((IStructuredDataSourceWrapper) null);
+            _dataSourceCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((IStructuredDataSourceWrapper)null);
             await Assert.ThrowsExceptionAsync<ConnectionException>(() =>
                 _sut.ProcessAsync(_database.Object, _configuration));
         }

@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using AnalysisServicesRefresh.BLL.Interfaces;
+﻿using AnalysisServicesRefresh.BLL.Interfaces;
 using Microsoft.AnalysisServices.Tabular;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AnalysisServicesRefresh.BLL.Wrappers
 {
@@ -17,6 +17,11 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
         public void Connect(string connectionString)
         {
             _server.Connect(connectionString);
+        }
+
+        public void Disconnect()
+        {
+            _server.Disconnect();
         }
 
         public string Name => _server.Name;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AnalysisServicesRefresh.BLL.Enums;
+using System.Collections.Generic;
 
 namespace AnalysisServicesRefresh.BLL.Models
 {
@@ -10,5 +11,6 @@ namespace AnalysisServicesRefresh.BLL.Models
         public List<FullTableConfiguration> FullTables { get; set; }
         public List<PartitionedTableConfiguration> PartitionedTables { get; set; }
         public string ServerName { get; set; }
+        public ModelProcessorType ModelProcessorType { get; set; }
     }
 }

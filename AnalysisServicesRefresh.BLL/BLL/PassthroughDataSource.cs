@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Interfaces;
+﻿using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
+using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
-    public class PassthroughDataSourceProcessor : IDataSourceProcessor
+    public class PassthroughDataSource : IDataSource
     {
         public Task ProcessAsync(IDatabaseWrapper database, ModelConfiguration model)
         {

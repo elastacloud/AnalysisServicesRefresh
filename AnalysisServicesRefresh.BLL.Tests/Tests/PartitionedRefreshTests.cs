@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AnalysisServicesRefresh.BLL.BLL;
+﻿using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using AnalysisServicesRefresh.BLL.Tests.Fakes;
@@ -9,6 +6,9 @@ using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {
@@ -163,7 +163,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _sut.Refresh(_table.Object);
 
             var source =
-                (MPartitionSource) _partitionCollection.Object.First(x => x.Name == "20191201").Source;
+                (MPartitionSource)_partitionCollection.Object.First(x => x.Name == "20191201").Source;
 
             Assert.AreEqual("M Expression Where DateKey >= 20191201 AND DateKey <= 20191231",
                 source.Expression);
@@ -175,7 +175,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _sut.Refresh(_table.Object);
 
             var partition =
-                (FakePartitionWrapper) _partitionCollection.Object.First(x => x.Name == "20191101");
+                (FakePartitionWrapper)_partitionCollection.Object.First(x => x.Name == "20191101");
 
             Assert.AreEqual(RefreshType.Full, partition.RefreshType);
         }

@@ -1,9 +1,9 @@
-﻿using System;
-using AnalysisServicesRefresh.BLL.BLL;
+﻿using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Enums;
 using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {
@@ -52,7 +52,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 {
                     Authentication = new AuthenticationConfiguration
                     {
-                        Type = (AuthenticationType) 99
+                        Type = (AuthenticationType)99
                     }
                 }));
         }
@@ -91,7 +91,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 {
                     Authentication = new AuthenticationConfiguration
                     {
-                        Type = (AuthenticationType) 99
+                        Type = (AuthenticationType)99
                     }
                 }));
         }

@@ -1,26 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Factories;
+﻿using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices;
 using Microsoft.AnalysisServices.Tabular;
 using Newtonsoft.Json;
 using NLog;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
-    public class SqlServerOAuthDataSourceProcessor : IDataSourceProcessor
+    public class SqlServerOAuthDataSource : IDataSource
     {
         private readonly ILogger _logger;
         private readonly ITokenProviderFactory _tokenProviderFactory;
 
-        public SqlServerOAuthDataSourceProcessor() : this(new TokenProviderFactory(),
+        public SqlServerOAuthDataSource() : this(new TokenProviderFactory(),
             LogManager.GetCurrentClassLogger())
         {
         }
 
-        public SqlServerOAuthDataSourceProcessor(ITokenProviderFactory tokenProviderFactory, ILogger logger)
+        public SqlServerOAuthDataSource(ITokenProviderFactory tokenProviderFactory, ILogger logger)
         {
             _tokenProviderFactory = tokenProviderFactory;
             _logger = logger;

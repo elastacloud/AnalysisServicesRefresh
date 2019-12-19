@@ -7,5 +7,6 @@ namespace AnalysisServicesRefresh.BLL.Interfaces
         string Name { get; }
         IDatabaseCollectionWrapper Databases { get; }
         void Connect(string connectionString);
+        void Disconnect();
     }
 }

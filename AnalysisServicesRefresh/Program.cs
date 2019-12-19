@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.BLL;
+﻿using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Models;
 using AnalysisServicesRefresh.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh
 {
@@ -46,11 +46,12 @@ namespace AnalysisServicesRefresh
                 },
                 DatabaseName = properties.DatabaseName,
                 FullTables = properties.FullTables,
+                ModelProcessorType = properties.ModelProcessorType,
                 PartitionedTables = properties.PartitionedTables,
                 ServerName = properties.ServerName
             };
 
-            await new ModelProcessor().ProcessAsync(model);
+            await new ModelProcessorFactory().Create(model.ModelProcessorType).ProcessAsync(model);
         }
     }
 }

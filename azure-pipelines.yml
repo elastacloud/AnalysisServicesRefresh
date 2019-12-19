@@ -8,7 +8,11 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  major: '1'
+  minor: '1'
+  patch: '0'
 
+name: $(major).$(minor).$(Year:yy)$(DayOfYear)$(Rev:.r)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -16,6 +20,21 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+
+- powershell: |
+   $AssemblyVersion = "$(major).$(minor).$(patch)"
+   $AssemblyFileVersion = "$(build.buildNumber)"
+   
+   Get-ChildItem -Recurse | 
+       Where-Object { $_.Name -eq "AssemblyInfo.cs" } |
+       ForEach-Object {
+           $Content = Get-Content -Path $_.FullName | 
+               % { $_ -replace '\[assembly: AssemblyVersion\("(.*)"\)\]', "[assembly: AssemblyVersion(""$AssemblyVersion"")]" } |
+               % { $_ -replace '\[assembly: AssemblyFileVersion\("(.*)"\)\]', "[assembly: AssemblyFileVersion(""$AssemblyFileVersion"")]" }
+   
+           Set-Content -Path $_.FullName -Value $Content
+       }
+  displayName: 'Update AssemblyInfo'
 
 - task: VSBuild@1
   inputs:
@@ -33,10 +52,10 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)\AnalysisServicesRefresh\bin\$(buildConfiguration)'
     Contents: '**'
     TargetFolder: '$(build.artifactstagingdirectory)'
-  condition: succeeded()
+  condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     artifactName: drop
-  condition: succeeded()
+  condition: succeededOrFailed()

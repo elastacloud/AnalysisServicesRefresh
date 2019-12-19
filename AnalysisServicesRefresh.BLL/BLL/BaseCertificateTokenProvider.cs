@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using AnalysisServicesRefresh.BLL.Helpers;
+using AnalysisServicesRefresh.BLL.Interfaces;
+using AnalysisServicesRefresh.BLL.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Helpers;
-using AnalysisServicesRefresh.BLL.Interfaces;
-using AnalysisServicesRefresh.BLL.Models;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
@@ -29,7 +29,7 @@ namespace AnalysisServicesRefresh.BLL.BLL
             var clientId = Model.Authentication.KeyVaultClientId;
             var thumbprint = Model.Authentication.KeyVaultAuthentication;
             var certificate = GetCertificate(thumbprint);
-            var secretNames = new List<string> {ClientIdName, ClientSecretName};
+            var secretNames = new List<string> { ClientIdName, ClientSecretName };
 
             var secrets = await AuthenticationHelpers.GetSecretsFromKeyVault(
                 keyVaultBaseUri, clientId, certificate, secretNames, cancellationToken

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using AnalysisServicesRefresh.BLL.Enums;
+﻿using AnalysisServicesRefresh.BLL.Enums;
 using AnalysisServicesRefresh.BLL.Models;
+using System.Collections.Generic;
 
 namespace AnalysisServicesRefresh.Models
 {
@@ -19,6 +19,7 @@ namespace AnalysisServicesRefresh.Models
         public string KeyVaultAuthentication { get; set; }
         public string KeyVaultBaseUri { get; set; }
         public string KeyVaultClientId { get; set; }
+        public ModelProcessorType ModelProcessorType { get; set; }
         public List<PartitionedTableConfiguration> PartitionedTables { get; set; }
         public string ServerName { get; set; }
     }

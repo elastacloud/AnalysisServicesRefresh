@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Models;
+﻿using AnalysisServicesRefresh.BLL.Models;
+using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.Interfaces
 {
-    public interface IDataSourceProcessor
+    public interface IDataSource
     {
         Task ProcessAsync(IDatabaseWrapper database, ModelConfiguration model);
     }

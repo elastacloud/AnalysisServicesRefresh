@@ -1,20 +1,20 @@
-﻿using System;
-using AnalysisServicesRefresh.BLL.BLL;
+﻿using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Enums;
 using AnalysisServicesRefresh.BLL.Interfaces;
+using System;
 
 namespace AnalysisServicesRefresh.BLL.Factories
 {
-    public class DataSourceProcessorFactory : IDataSourceProcessorFactory
+    public class DataSourceFactory : IDataSourceFactory
     {
-        public IDataSourceProcessor Create(DataSourceType dataSourceType)
+        public IDataSource Create(DataSourceType dataSourceType)
         {
             switch (dataSourceType)
             {
                 case DataSourceType.OAuth:
-                    return new SqlServerOAuthDataSourceProcessor();
+                    return new SqlServerOAuthDataSource();
                 case DataSourceType.Passthrough:
-                    return new PassthroughDataSourceProcessor();
+                    return new PassthroughDataSource();
                 default:
                     throw new InvalidOperationException("DataSourceType is unknown.");
             }

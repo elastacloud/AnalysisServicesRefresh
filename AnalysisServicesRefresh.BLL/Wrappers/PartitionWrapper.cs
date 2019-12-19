@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using AnalysisServicesRefresh.BLL.Interfaces;
+﻿using AnalysisServicesRefresh.BLL.Interfaces;
 using Microsoft.AnalysisServices.Tabular;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AnalysisServicesRefresh.BLL.Wrappers
 {

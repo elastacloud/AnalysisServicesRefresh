@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using AnalysisServicesRefresh.BLL.Factories;
+﻿using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices.Tabular;
 using NLog;
+using System;
+using System.Linq;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
@@ -90,10 +90,10 @@ namespace AnalysisServicesRefresh.BLL.BLL
                 });
 
             var changedPartitions = (from sp in sourcePartitions
-                join dp in destinationPartitions
-                    on sp.Name equals dp.Name
-                where sp.Query != dp.Query
-                select sp.Name).ToList();
+                                     join dp in destinationPartitions
+                                         on sp.Name equals dp.Name
+                                     where sp.Query != dp.Query
+                                     select sp.Name).ToList();
 
             if (changedPartitions.Any())
             {
@@ -106,12 +106,12 @@ namespace AnalysisServicesRefresh.BLL.BLL
         {
             var oldPartitions =
                 (from dp in _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartition)
-                    join sp in PartitionedTable.Partitions
-                        on dp.Name equals sp.Name into lj
-                    from sp in lj.DefaultIfEmpty()
-                    where sp == null
-                    orderby dp.Name
-                    select dp).ToList();
+                 join sp in PartitionedTable.Partitions
+                     on dp.Name equals sp.Name into lj
+                 from sp in lj.DefaultIfEmpty()
+                 where sp == null
+                 orderby dp.Name
+                 select dp).ToList();
 
             oldPartitions.ForEach(x => _table.Partitions.Remove(x));
             _logger.Info($"Removing partitions: {string.Join(", ", oldPartitions.Select(x => x.Name))}.");
@@ -122,12 +122,12 @@ namespace AnalysisServicesRefresh.BLL.BLL
             var template = _table.Partitions.Find(TemplatePartitionName);
 
             var newPartitions = (from sp in PartitionedTable.Partitions
-                join dp in _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartition)
-                    on sp.Name equals dp.Name into lj
-                from dp in lj.DefaultIfEmpty()
-                where dp == null
-                orderby sp.Name
-                select sp).ToList();
+                                 join dp in _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartition)
+                                     on sp.Name equals dp.Name into lj
+                                 from dp in lj.DefaultIfEmpty()
+                                 where dp == null
+                                 orderby sp.Name
+                                 select sp).ToList();
 
             foreach (var p in newPartitions)
             {
@@ -159,11 +159,11 @@ namespace AnalysisServicesRefresh.BLL.BLL
         {
             var partitions =
                 (from dp in _table.Partitions
-                    join sp in PartitionedTable.Partitions
-                        on dp.Name equals sp.Name
-                    where sp.Refresh
-                    orderby dp.Name
-                    select dp).ToList();
+                 join sp in PartitionedTable.Partitions
+                     on dp.Name equals sp.Name
+                 where sp.Refresh
+                 orderby dp.Name
+                 select dp).ToList();
 
             partitions.ForEach(x => x.RequestRefresh(RefreshType.Full));
             _logger.Info($"Refreshing partitions: {string.Join(", ", partitions.Select(x => x.Name))}.");

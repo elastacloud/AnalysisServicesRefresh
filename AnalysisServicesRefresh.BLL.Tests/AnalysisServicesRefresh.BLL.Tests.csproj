@@ -90,18 +90,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests\DataSourceProcessorFactoryTests.cs" />
-    <Compile Include="Tests\SqlServerOAuthDataSourceProcessorTests.cs" />
+    <Compile Include="Tests\DataSourceFactoryTests.cs" />
+    <Compile Include="Tests\NonTransactionalModelProcessorTests.cs" />
+    <Compile Include="Tests\SqlServerOAuthDataSourceTests.cs" />
     <Compile Include="Tests\PartitionedRefreshTests.cs" />
     <Compile Include="Fakes\FakePartitionWrapper.cs" />
     <Compile Include="Tests\FullRefreshTests.cs" />
-    <Compile Include="Tests\ModelProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\PartitionWrapperFactoryTests.cs" />
-    <Compile Include="Tests\PassthroughDataSourceProcessorTests.cs" />
+    <Compile Include="Tests\PassthroughDataSourceTests.cs" />
     <Compile Include="Tests\RefreshFactoryTests.cs" />
     <Compile Include="Tests\ServerWrapperFactoryTests.cs" />
-    <Compile Include="Tests\TableProcessorTests.cs" />
+    <Compile Include="Tests\ModelProcessorFactoryTests.cs" />
+    <Compile Include="Tests\TransactionalModelProcessorTests.cs" />
     <Compile Include="Tests\TokenProviderFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>

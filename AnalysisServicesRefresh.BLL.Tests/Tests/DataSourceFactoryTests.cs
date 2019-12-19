@@ -1,40 +1,40 @@
-﻿using System;
-using AnalysisServicesRefresh.BLL.BLL;
+﻿using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Enums;
 using AnalysisServicesRefresh.BLL.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {
     [TestClass]
-    public class DataSourceProcessorFactoryTests
+    public class DataSourceFactoryTests
     {
-        private DataSourceProcessorFactory _sut;
+        private DataSourceFactory _sut;
 
         [TestInitialize]
         public void Setup()
         {
-            _sut = new DataSourceProcessorFactory();
+            _sut = new DataSourceFactory();
         }
 
         [TestMethod]
-        public void TestCreatesOAuthDataSourceProcessor()
+        public void TestCreatesOAuthDataSource()
         {
             var actual = _sut.Create(DataSourceType.OAuth);
-            Assert.IsInstanceOfType(actual, typeof(SqlServerOAuthDataSourceProcessor));
+            Assert.IsInstanceOfType(actual, typeof(SqlServerOAuthDataSource));
         }
 
         [TestMethod]
-        public void TestCreatesPassthroughDataSourceProcessor()
+        public void TestCreatesPassthroughDataSource()
         {
             var actual = _sut.Create(DataSourceType.Passthrough);
-            Assert.IsInstanceOfType(actual, typeof(PassthroughDataSourceProcessor));
+            Assert.IsInstanceOfType(actual, typeof(PassthroughDataSource));
         }
 
         [TestMethod]
         public void TestThrowsInvalidOperationExceptionWhenDataSourceTypeIsUnknown()
         {
-            Assert.ThrowsException<InvalidOperationException>(() => _sut.Create((DataSourceType) 99));
+            Assert.ThrowsException<InvalidOperationException>(() => _sut.Create((DataSourceType)99));
         }
     }
 }
