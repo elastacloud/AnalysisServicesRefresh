@@ -1,5 +1,5 @@
 trigger:
-- master
+- none
 
 pool:
   vmImage: 'windows-latest'
@@ -12,7 +12,7 @@ variables:
   minor: '1'
   patch: '0'
 
-name: $(major).$(minor).$(Year:yy)$(DayOfYear)$(Rev:.r)
+name: $(Build.DefinitionName)_v$(major).$(minor).$(Year:yy)$(DayOfYear)$(Rev:.r)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -23,7 +23,7 @@ steps:
 
 - powershell: |
    $AssemblyVersion = "$(major).$(minor).$(patch)"
-   $AssemblyFileVersion = "$(build.buildNumber)"
+   $AssemblyFileVersion = ("$(build.buildNumber)" -split "_v")[1]
    
    Get-ChildItem -Recurse | 
        Where-Object { $_.Name -eq "AssemblyInfo.cs" } |

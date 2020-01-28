@@ -14,6 +14,6 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
             _database = database;
         }
 
-        public IModelWrapper Model => new ModelWrapper(_database.Model);
+        public IModelWrapper Model => _database.Model == null ? null : new ModelWrapper(_database.Model);
     }
 }

@@ -19,6 +19,11 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
         {
             var dataSource = _dataSourceCollection.Find(name);
 
+            if(dataSource == null)
+            {
+                return null;
+            }
+
             if (dataSource is StructuredDataSource structuredDataSource)
             {
                 return new StructuredDataSourceWrapper(structuredDataSource);

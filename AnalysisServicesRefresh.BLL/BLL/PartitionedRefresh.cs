@@ -5,6 +5,7 @@ using Microsoft.AnalysisServices.Tabular;
 using NLog;
 using System;
 using System.Linq;
+using ConnectionException = Microsoft.AnalysisServices.ConnectionException;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
@@ -119,7 +120,7 @@ namespace AnalysisServicesRefresh.BLL.BLL
 
         private void AddNewPartitions()
         {
-            var template = _table.Partitions.Find(TemplatePartitionName);
+            var template = GetPartition(TemplatePartitionName);
 
             var newPartitions = (from sp in PartitionedTable.Partitions
                                  join dp in _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartition)
@@ -167,6 +168,18 @@ namespace AnalysisServicesRefresh.BLL.BLL
 
             partitions.ForEach(x => x.RequestRefresh(RefreshType.Full));
             _logger.Info($"Refreshing partitions: {string.Join(", ", partitions.Select(x => x.Name))}.");
+        }
+
+        private IPartitionWrapper GetPartition(string partitionName)
+        {
+            var partition = _table.Partitions.Find(partitionName);
+
+            if (partition == null)
+            {
+                throw new ConnectionException($"Could not find partition {partitionName}.");
+            }
+
+            return partition;
         }
 
         private string GetPartitionQuery(IPartitionWrapper partition)

@@ -19,7 +19,8 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
 
         public IPartitionWrapper Find(string name)
         {
-            return new PartitionWrapper(_partitionCollection.Find(name));
+            var partition = _partitionCollection.Find(name);
+            return partition == null ? null : new PartitionWrapper(partition);
         }
 
         public void Add(IPartitionWrapper item)

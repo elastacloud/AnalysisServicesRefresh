@@ -16,7 +16,8 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
 
         public ITableWrapper Find(string name)
         {
-            return new TableWrapper(_tableCollection.Find(name));
+            var table = _tableCollection.Find(name);
+            return table == null ? null : new TableWrapper(table);
         }
     }
 }

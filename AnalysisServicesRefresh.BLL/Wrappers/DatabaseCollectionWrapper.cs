@@ -16,7 +16,8 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
 
         public IDatabaseWrapper FindByName(string name)
         {
-            return new DatabaseWrapper(_databaseCollection.FindByName(name));
+            var database = _databaseCollection.FindByName(name);
+            return database == null ? null : new DatabaseWrapper(database);
         }
     }
 }

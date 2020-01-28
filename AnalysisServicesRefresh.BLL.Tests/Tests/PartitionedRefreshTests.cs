@@ -224,6 +224,14 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         }
 
         [TestMethod]
+        public void TestThrowConnectionExceptionWhenTemplatePartitionSourceIsNotFound()
+        {
+            _partitionCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((IPartitionWrapper) null);
+
+            Assert.ThrowsException<Microsoft.AnalysisServices.ConnectionException>(() => _sut.Refresh(_table.Object));
+        }
+
+        [TestMethod]
         public void TestLogsPartitionedRefreshWithInitialLoadInformation()
         {
             _sut.Refresh(_table.Object);
