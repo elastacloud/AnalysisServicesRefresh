@@ -5,7 +5,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Fakes
 {
     internal class FakePartitionWrapper : IPartitionWrapper
     {
-        public RefreshType RefreshType { get; set; }
+        public RefreshType RefreshType { get; private set; }
         public string Name { get; set; }
         public PartitionSource Source { get; set; }
         public Partition Partition { get; }

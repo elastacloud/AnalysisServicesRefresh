@@ -1,8 +1,8 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
+﻿using System;
+using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Enums;
 using AnalysisServicesRefresh.BLL.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {
@@ -34,7 +34,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public void TestThrowsInvalidOperationExceptionWhenDataSourceTypeIsUnknown()
         {
-            Assert.ThrowsException<InvalidOperationException>(() => _sut.Create((DataSourceType)99));
+            Assert.ThrowsException<InvalidOperationException>(() => _sut.Create((DataSourceType) 99));
         }
     }
 }

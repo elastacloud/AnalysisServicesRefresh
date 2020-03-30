@@ -1,4 +1,9 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices;
@@ -6,11 +11,7 @@ using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using DataSourceType = AnalysisServicesRefresh.BLL.Enums.DataSourceType;
 using RefreshType = Microsoft.AnalysisServices.Tabular.RefreshType;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
@@ -32,10 +33,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         private Mock<IRefreshFactory> _refreshFactory;
         private Mock<IServerWrapper> _server;
         private Mock<IServerWrapperFactory> _serverFactory;
+        private TransactionalModelProcessor _sut;
         private Mock<ITableCollectionWrapper> _tableCollection;
         private Mock<ITokenProvider> _tokenProvider;
         private Mock<ITokenProviderFactory> _tokenProviderFactory;
-        private TransactionalModelProcessor _sut;
 
         [TestInitialize]
         public void Setup()
@@ -45,7 +46,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 Authentication = new AuthenticationConfiguration(),
                 DataSource = new DataSourceConfiguration
                 {
-                    Type = Enums.DataSourceType.OAuth
+                    Type = DataSourceType.OAuth
                 },
                 DatabaseName = "ModelDatabaseName",
                 FullTables = new List<FullTableConfiguration>
@@ -115,7 +116,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _dataSource = new Mock<IDataSource>();
 
             _dataSourceFactory = new Mock<IDataSourceFactory>();
-            _dataSourceFactory.Setup(x => x.Create(It.IsAny<Enums.DataSourceType>()))
+            _dataSourceFactory.Setup(x => x.Create(It.IsAny<DataSourceType>()))
                 .Returns(_dataSource.Object);
 
             _logger = new Mock<ILogger>();
@@ -155,7 +156,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public async Task TestInvalidDatabaseInServerThrowsConnectionException()
         {
-            _databaseCollection.Setup(x => x.FindByName(It.IsAny<string>())).Returns((IDatabaseWrapper)null);
+            _databaseCollection.Setup(x => x.FindByName(It.IsAny<string>())).Returns((IDatabaseWrapper) null);
             await Assert.ThrowsExceptionAsync<ConnectionException>(() => _sut.ProcessAsync(_configuration));
         }
 
@@ -235,7 +236,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public async Task TestInvalidTableInDatabaseThrowsConnectionException()
         {
-            _tableCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((ITableWrapper)null);
+            _tableCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((ITableWrapper) null);
             await Assert.ThrowsExceptionAsync<ConnectionException>(() => _sut.ProcessAsync(_configuration));
         }
 
@@ -278,7 +279,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public async Task TestProcessesDataSource()
         {
             await _sut.ProcessAsync(_configuration);
-            _dataSource.Verify(x => x.ProcessAsync(_database.Object, _configuration), Times.Once);
+            _dataSource.Verify(x => x.ProcessAsync(_database.Object, _configuration, It.IsAny<CancellationToken>()),
+                Times.Once);
         }
 
         [TestMethod]
@@ -328,7 +330,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             }
             catch
             {
-
+                // ignored
             }
 
             _model.Verify(x => x.SaveChanges(It.IsAny<SaveOptions>()), Times.Once);

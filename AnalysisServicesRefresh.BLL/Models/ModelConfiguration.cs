@@ -1,5 +1,5 @@
-﻿using AnalysisServicesRefresh.BLL.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using AnalysisServicesRefresh.BLL.Enums;
 
 namespace AnalysisServicesRefresh.BLL.Models
 {

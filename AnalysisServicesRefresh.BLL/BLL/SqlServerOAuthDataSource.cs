@@ -1,12 +1,13 @@
-﻿using AnalysisServicesRefresh.BLL.Factories;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices;
 using Microsoft.AnalysisServices.Tabular;
 using Newtonsoft.Json;
 using NLog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
@@ -26,10 +27,11 @@ namespace AnalysisServicesRefresh.BLL.BLL
             _logger = logger;
         }
 
-        public async Task ProcessAsync(IDatabaseWrapper database, ModelConfiguration model)
+        public async Task ProcessAsync(IDatabaseWrapper database, ModelConfiguration model,
+            CancellationToken cancellationToken = default)
         {
             var dataSource = GetDataSource(database, model.DataSource.Name);
-            var sqlServerToken = await GetSqlServerToken(model);
+            var sqlServerToken = await GetSqlServerToken(model, cancellationToken);
             dataSource.Credential = GetSqlServerCredential(sqlServerToken);
         }
 
@@ -47,10 +49,10 @@ namespace AnalysisServicesRefresh.BLL.BLL
             return dataSource;
         }
 
-        private async Task<Token> GetSqlServerToken(ModelConfiguration model)
+        private async Task<Token> GetSqlServerToken(ModelConfiguration model, CancellationToken cancellationToken)
         {
             var provider = _tokenProviderFactory.CreateSqlServerTokenProvider(model);
-            var token = await provider.CreateAsync();
+            var token = await provider.CreateAsync(cancellationToken);
             _logger.Info("Retrieved SQL Server authentication token.");
 
             return token;

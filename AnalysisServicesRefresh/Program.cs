@@ -1,12 +1,12 @@
-﻿using AnalysisServicesRefresh.BLL.Factories;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Models;
 using AnalysisServicesRefresh.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh
 {
@@ -19,7 +19,7 @@ namespace AnalysisServicesRefresh
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                Converters = new List<JsonConverter> { new StringEnumConverter() }
+                Converters = new List<JsonConverter> {new StringEnumConverter()}
             };
 
             var properties = JsonConvert.DeserializeObject<ActivityProperties>(json, settings)

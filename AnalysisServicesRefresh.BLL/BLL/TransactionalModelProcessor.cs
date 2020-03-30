@@ -1,16 +1,19 @@
-﻿using AnalysisServicesRefresh.BLL.Factories;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices.Tabular;
 using NLog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
     public class TransactionalModelProcessor : BaseModelProcessor
     {
-        public TransactionalModelProcessor() : base(
+        private readonly IDataSourceFactory _dataSourceFactory;
+
+        public TransactionalModelProcessor() : this(
             new ServerWrapperFactory(),
             new TokenProviderFactory(),
             new RefreshFactory(),
@@ -25,27 +28,41 @@ namespace AnalysisServicesRefresh.BLL.BLL
             IRefreshFactory refreshFactory,
             IDataSourceFactory dataSourceFactory,
             ILogger logger) : base(
-                serverFactory,
-                tokenProviderFactory,
-                refreshFactory,
-                dataSourceFactory,
-                logger)
+            serverFactory,
+            tokenProviderFactory,
+            refreshFactory,
+            logger)
         {
+            _dataSourceFactory = dataSourceFactory;
         }
 
-        protected async override Task ProcessRefreshPlansAsync(ModelConfiguration model, List<RefreshPlan> refreshPlans)
+        protected override async Task ProcessAsync(ModelConfiguration model, List<RefreshPlan> refreshPlans,
+            CancellationToken cancellationToken)
         {
-            await _dataSourceFactory.Create(model.DataSource.Type)
-                        .ProcessAsync(_database, model);
-
-            refreshPlans.ForEach(x =>
+            using (var server = await GetServerAsync())
             {
-                _logger.Info($"Processing table {x.Table.Name}.");
-                x.Refresh.Refresh(x.Table);
-            });
+                try
+                {
+                    var database = GetDatabase(server, model.DatabaseName);
 
-            _logger.Info("Saving model changes.");
-            _database.Model.SaveChanges(new SaveOptions { MaxParallelism = 5 });
+                    await _dataSourceFactory.Create(model.DataSource.Type)
+                        .ProcessAsync(database, model, cancellationToken);
+
+                    refreshPlans.ForEach(x =>
+                    {
+                        Logger.Info($"Processing table {x.Table}.");
+                        var table = GetTable(database, x.Table);
+                        x.Refresh.Refresh(table);
+                    });
+
+                    Logger.Info("Saving model changes.");
+                    database.Model.SaveChanges(new SaveOptions {MaxParallelism = 5});
+                }
+                finally
+                {
+                    server.Disconnect();
+                }
+            }
         }
 
         protected override Task BeforeProcessingAsync()

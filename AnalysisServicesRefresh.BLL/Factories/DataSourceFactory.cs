@@ -1,7 +1,7 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
+﻿using System;
+using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Enums;
 using AnalysisServicesRefresh.BLL.Interfaces;
-using System;
 
 namespace AnalysisServicesRefresh.BLL.Factories
 {

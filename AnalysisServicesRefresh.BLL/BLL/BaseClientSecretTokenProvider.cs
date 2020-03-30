@@ -1,9 +1,9 @@
-﻿using AnalysisServicesRefresh.BLL.Helpers;
-using AnalysisServicesRefresh.BLL.Interfaces;
-using AnalysisServicesRefresh.BLL.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.Helpers;
+using AnalysisServicesRefresh.BLL.Interfaces;
+using AnalysisServicesRefresh.BLL.Models;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
@@ -26,7 +26,7 @@ namespace AnalysisServicesRefresh.BLL.BLL
             var keyVaultBaseUri = Model.Authentication.KeyVaultBaseUri;
             var clientId = Model.Authentication.KeyVaultClientId;
             var clientSecret = Model.Authentication.KeyVaultAuthentication;
-            var secretNames = new List<string> { ClientIdName, ClientSecretName };
+            var secretNames = new List<string> {ClientIdName, ClientSecretName};
 
             var secrets = await AuthenticationHelpers.GetSecretsFromKeyVault(
                 keyVaultBaseUri, clientId, clientSecret, secretNames, cancellationToken

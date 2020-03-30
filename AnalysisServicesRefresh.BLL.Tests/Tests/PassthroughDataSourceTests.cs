@@ -1,9 +1,9 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
+﻿using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {

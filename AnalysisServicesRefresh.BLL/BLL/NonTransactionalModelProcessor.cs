@@ -1,20 +1,23 @@
-﻿using AnalysisServicesRefresh.BLL.Factories;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices.Tabular;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AnalysisServicesRefresh.BLL.BLL
 {
     public class NonTransactionalModelProcessor : BaseModelProcessor
     {
+        private const int Attempts = 2;
+        private readonly IDataSourceFactory _dataSourceFactory;
         private readonly List<string> _failures = new List<string>();
 
-        public NonTransactionalModelProcessor() : base(
+        public NonTransactionalModelProcessor() : this(
             new ServerWrapperFactory(),
             new TokenProviderFactory(),
             new RefreshFactory(),
@@ -29,37 +32,78 @@ namespace AnalysisServicesRefresh.BLL.BLL
             IRefreshFactory refreshFactory,
             IDataSourceFactory dataSourceFactory,
             ILogger logger) : base(
-                serverFactory,
-                tokenProviderFactory,
-                refreshFactory,
-                dataSourceFactory,
-                logger)
+            serverFactory,
+            tokenProviderFactory,
+            refreshFactory,
+            logger)
         {
+            _dataSourceFactory = dataSourceFactory;
         }
 
-        protected override async Task ProcessRefreshPlansAsync(ModelConfiguration model, List<RefreshPlan> refreshPlans)
+        protected override async Task ProcessAsync(ModelConfiguration model, List<RefreshPlan> refreshPlans,
+            CancellationToken cancellationToken)
         {
-            foreach (var plan in refreshPlans)
+            foreach (var refreshPlan in refreshPlans)
             {
+                await RetryProcessRefreshPlanAsync(model, refreshPlan, cancellationToken);
+            }
+        }
+
+        private async Task RetryProcessRefreshPlanAsync(ModelConfiguration model, RefreshPlan refreshPlan,
+            CancellationToken cancellationToken)
+        {
+            var attempt = 0;
+            do
+            {
+                attempt++;
+
                 try
                 {
-                    await _dataSourceFactory.Create(model.DataSource.Type)
-                        .ProcessAsync(_database, model);
-
-                    _logger.Info($"Processing table {plan.Table.Name}.");
-                    plan.Refresh.Refresh(plan.Table);
-
-                    _logger.Info($"Saving {plan.Table.Name}.");
-                    _database.Model.SaveChanges(new SaveOptions { MaxParallelism = 5 });
+                    await ProcessRefreshPlanAsync(model, refreshPlan, cancellationToken);
+                    break;
                 }
-                catch (Exception e)
+                catch
                 {
-                    _logger.Error(e);
-                    _failures.Add(plan.Table.Name);
-
-                    Disconnect();
-                    await ConnectAsync();
+                    if (attempt == Attempts)
+                    {
+                        _failures.Add(refreshPlan.Table);
+                    }
                 }
+            } while (attempt < Attempts);
+        }
+
+        private async Task ProcessRefreshPlanAsync(ModelConfiguration model, RefreshPlan refreshPlan,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                using (var server = await GetServerAsync())
+                {
+                    try
+                    {
+                        var database = GetDatabase(server, model.DatabaseName);
+
+                        await _dataSourceFactory.Create(model.DataSource.Type)
+                            .ProcessAsync(database, model, cancellationToken);
+
+                        Logger.Info($"Processing table {refreshPlan.Table}.");
+
+                        var table = GetTable(database, refreshPlan.Table);
+                        refreshPlan.Refresh.Refresh(table);
+
+                        Logger.Info($"Saving {refreshPlan.Table}.");
+                        database.Model.SaveChanges(new SaveOptions {MaxParallelism = 5});
+                    }
+                    finally
+                    {
+                        server.Disconnect();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                throw;
             }
         }
 
@@ -73,7 +117,8 @@ namespace AnalysisServicesRefresh.BLL.BLL
         {
             if (_failures.Any())
             {
-                throw new ApplicationException($"Non-transactional processing failed for the following tables: {string.Join(", ", _failures)}.");
+                throw new ApplicationException(
+                    $"Non-transactional processing failed for the following tables: {string.Join(", ", _failures)}.");
             }
 
             return Task.CompletedTask;

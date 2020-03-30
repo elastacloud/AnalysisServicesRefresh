@@ -1,7 +1,7 @@
-﻿using AnalysisServicesRefresh.BLL.Interfaces;
-using Microsoft.AnalysisServices.Tabular;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using AnalysisServicesRefresh.BLL.Interfaces;
+using Microsoft.AnalysisServices.Tabular;
 
 namespace AnalysisServicesRefresh.BLL.Wrappers
 {
@@ -19,7 +19,7 @@ namespace AnalysisServicesRefresh.BLL.Wrappers
         {
             var dataSource = _dataSourceCollection.Find(name);
 
-            if(dataSource == null)
+            if (dataSource == null)
             {
                 return null;
             }

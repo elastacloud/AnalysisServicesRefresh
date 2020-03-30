@@ -1,4 +1,9 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.AnalysisServices;
@@ -6,11 +11,7 @@ using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using DataSourceType = AnalysisServicesRefresh.BLL.Enums.DataSourceType;
 using RefreshType = Microsoft.AnalysisServices.Tabular.RefreshType;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
@@ -32,10 +33,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         private Mock<IRefreshFactory> _refreshFactory;
         private Mock<IServerWrapper> _server;
         private Mock<IServerWrapperFactory> _serverFactory;
+        private NonTransactionalModelProcessor _sut;
         private Mock<ITableCollectionWrapper> _tableCollection;
         private Mock<ITokenProvider> _tokenProvider;
         private Mock<ITokenProviderFactory> _tokenProviderFactory;
-        private NonTransactionalModelProcessor _sut;
 
         [TestInitialize]
         public void Setup()
@@ -45,7 +46,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 Authentication = new AuthenticationConfiguration(),
                 DataSource = new DataSourceConfiguration
                 {
-                    Type = Enums.DataSourceType.OAuth
+                    Type = DataSourceType.OAuth
                 },
                 DatabaseName = "ModelDatabaseName",
                 FullTables = new List<FullTableConfiguration>
@@ -115,7 +116,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _dataSource = new Mock<IDataSource>();
 
             _dataSourceFactory = new Mock<IDataSourceFactory>();
-            _dataSourceFactory.Setup(x => x.Create(It.IsAny<Enums.DataSourceType>()))
+            _dataSourceFactory.Setup(x => x.Create(It.IsAny<DataSourceType>()))
                 .Returns(_dataSource.Object);
 
             _logger = new Mock<ILogger>();
@@ -155,7 +156,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public async Task TestInvalidDatabaseInServerThrowsConnectionException()
         {
-            _databaseCollection.Setup(x => x.FindByName(It.IsAny<string>())).Returns((IDatabaseWrapper)null);
+            _databaseCollection.Setup(x => x.FindByName(It.IsAny<string>())).Returns((IDatabaseWrapper) null);
             await Assert.ThrowsExceptionAsync<ConnectionException>(() => _sut.ProcessAsync(_configuration));
         }
 
@@ -233,10 +234,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         }
 
         [TestMethod]
-        public async Task TestInvalidTableInDatabaseThrowsConnectionException()
+        public async Task TestInvalidTableInDatabaseThrowsApplicationException()
         {
-            _tableCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((ITableWrapper)null);
-            await Assert.ThrowsExceptionAsync<ConnectionException>(() => _sut.ProcessAsync(_configuration));
+            _tableCollection.Setup(x => x.Find(It.IsAny<string>())).Returns((ITableWrapper) null);
+            await Assert.ThrowsExceptionAsync<ApplicationException>(() => _sut.ProcessAsync(_configuration));
         }
 
         [TestMethod]
@@ -278,7 +279,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public async Task TestProcessesDataSource()
         {
             await _sut.ProcessAsync(_configuration);
-            _dataSource.Verify(x => x.ProcessAsync(_database.Object, _configuration), Times.Exactly(2));
+            _dataSource.Verify(x => x.ProcessAsync(_database.Object, _configuration, It.IsAny<CancellationToken>()));
         }
 
         [TestMethod]
@@ -328,14 +329,14 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             }
             catch
             {
-
+                // ignored
             }
 
-            _model.Verify(x => x.SaveChanges(It.IsAny<SaveOptions>()), Times.Exactly(2));
+            _model.Verify(x => x.SaveChanges(It.IsAny<SaveOptions>()), Times.Exactly(4));
         }
 
         [TestMethod]
-        public async Task TestRecreatesServerIfTableProcessingThrowsException()
+        public async Task TestRecreatesResourcesForEachTable()
         {
             var expected =
                 $"Data Source={_configuration.ServerName};Password=AnalysisServicesToken;Provider=MSOLAP;";
@@ -349,13 +350,13 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             }
             catch
             {
-
+                // ignored
             }
 
-            _server.Verify(x => x.Connect(expected), Times.Exactly(3));
-            _server.Verify(x => x.Disconnect(), Times.Exactly(3));
-            _server.Verify(x => x.Dispose(), Times.Exactly(3));
-            _tokenProvider.Verify(x => x.CreateAsync(It.IsAny<CancellationToken>()), Times.Exactly(3));
+            _server.Verify(x => x.Connect(expected), Times.Exactly(5));
+            _server.Verify(x => x.Disconnect(), Times.Exactly(5));
+            _server.Verify(x => x.Dispose(), Times.Exactly(5));
+            _tokenProvider.Verify(x => x.CreateAsync(It.IsAny<CancellationToken>()), Times.Exactly(5));
         }
 
         [TestMethod]
@@ -401,10 +402,12 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             }
             catch
             {
-
+                // ignored
             }
 
-            _logger.Verify(x => x.Error(It.Is<Exception>(y => y.Message == "Non-transactional processing failed for the following tables: FullModelTableName, PartitionedModelTableName.")));
+            _logger.Verify(x => x.Error(It.Is<Exception>(y =>
+                y.Message ==
+                "Non-transactional processing failed for the following tables: FullModelTableName, PartitionedModelTableName.")));
         }
 
         [TestMethod]
@@ -419,10 +422,30 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             }
             catch
             {
-
+                // ignored
             }
 
             _logger.Verify(x => x.Error(It.Is<Exception>(y => y.Message == "Test table exception.")));
+        }
+
+        [TestMethod]
+        public async Task TestRetriesTwiceIfTableProcessingThrowsException()
+        {
+            _configuration.PartitionedTables.RemoveAll(x => true);
+
+            _model.Setup(x => x.SaveChanges(It.IsAny<SaveOptions>()))
+                .Throws(new ApplicationException("Test table exception."));
+
+            try
+            {
+                await _sut.ProcessAsync(_configuration);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            _model.Verify(x => x.SaveChanges(It.IsAny<SaveOptions>()), Times.Exactly(2));
         }
     }
 }

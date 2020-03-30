@@ -1,8 +1,8 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
+﻿using System.Collections.Generic;
+using AnalysisServicesRefresh.BLL.BLL;
 using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
 {
@@ -44,7 +44,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public void TestModelConfigurationIsForwardedToDynamicRefresh()
         {
-            var refresh = (PartitionedRefresh)_sut.CreatePartitioned(_configuration);
+            var refresh = (PartitionedRefresh) _sut.CreatePartitioned(_configuration);
             Assert.AreEqual(_configuration, refresh.PartitionedTable);
         }
     }
