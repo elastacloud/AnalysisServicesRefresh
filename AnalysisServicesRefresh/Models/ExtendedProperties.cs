@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
-using AnalysisServicesRefresh.BLL.Enums;
+using AnalysisServicesRefresh.BLL.DataSources;
+using AnalysisServicesRefresh.BLL.KeyVaults;
+using AnalysisServicesRefresh.BLL.ModelProcessors;
 using AnalysisServicesRefresh.BLL.Models;
 
 namespace AnalysisServicesRefresh.Models

@@ -1,4 +1,4 @@
-﻿using AnalysisServicesRefresh.BLL.Interfaces;
+﻿using AnalysisServicesRefresh.BLL.Wrappers;
 using Microsoft.AnalysisServices.Tabular;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Fakes

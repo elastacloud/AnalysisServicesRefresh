@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AnalysisServicesRefresh.BLL.Enums;
+using AnalysisServicesRefresh.BLL.ModelProcessors;
 
 namespace AnalysisServicesRefresh.BLL.Models
 {

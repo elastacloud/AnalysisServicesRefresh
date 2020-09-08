@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.BLL;
-using AnalysisServicesRefresh.BLL.Interfaces;
+using AnalysisServicesRefresh.BLL.ConnectionStrings;
+using AnalysisServicesRefresh.BLL.DataSources;
+using AnalysisServicesRefresh.BLL.ModelProcessors;
 using AnalysisServicesRefresh.BLL.Models;
+using AnalysisServicesRefresh.BLL.Refreshes;
+using AnalysisServicesRefresh.BLL.Wrappers;
 using Microsoft.AnalysisServices;
 using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NLog;
-using DataSourceType = AnalysisServicesRefresh.BLL.Enums.DataSourceType;
+using DataSourceType = AnalysisServicesRefresh.BLL.DataSources.DataSourceType;
 using RefreshType = Microsoft.AnalysisServices.Tabular.RefreshType;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
@@ -20,6 +23,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
     public class TransactionalModelProcessorTests
     {
         private ModelConfiguration _configuration;
+        private Mock<IConnectionString> _connectionString;
+        private Mock<IConnectionStringFactory> _connectionStringFactory;
         private Mock<IDatabaseWrapper> _database;
         private Mock<IDatabaseCollectionWrapper> _databaseCollection;
         private Mock<IDataSource> _dataSource;
@@ -35,8 +40,6 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         private Mock<IServerWrapperFactory> _serverFactory;
         private TransactionalModelProcessor _sut;
         private Mock<ITableCollectionWrapper> _tableCollection;
-        private Mock<ITokenProvider> _tokenProvider;
-        private Mock<ITokenProviderFactory> _tokenProviderFactory;
 
         [TestInitialize]
         public void Setup()
@@ -48,34 +51,34 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 {
                     Type = DataSourceType.OAuth
                 },
-                DatabaseName = "ModelDatabaseName",
+                DatabaseName = "DatabaseName",
                 FullTables = new List<FullTableConfiguration>
                 {
                     new FullTableConfiguration
                     {
-                        Name = "FullModelTableName"
+                        Name = "FullTableName"
                     }
                 },
                 PartitionedTables = new List<PartitionedTableConfiguration>
                 {
                     new PartitionedTableConfiguration
                     {
-                        Name = "PartitionedModelTableName",
+                        Name = "PartitionedTableName",
                         Partitions = new List<PartitionConfiguration>()
                     }
                 },
-                ServerName = "ModelConnectionString"
+                ServerName = "ServerName"
             };
 
             _fullTable = new Mock<ITableWrapper>();
-            _fullTable.Setup(x => x.Name).Returns("FullModelTableName");
+            _fullTable.Setup(x => x.Name).Returns("FullTableName");
 
             _partitionedTable = new Mock<ITableWrapper>();
-            _partitionedTable.Setup(x => x.Name).Returns("PartitionedModelTableName");
+            _partitionedTable.Setup(x => x.Name).Returns("PartitionedTableName");
 
             _tableCollection = new Mock<ITableCollectionWrapper>();
-            _tableCollection.Setup(x => x.Find("FullModelTableName")).Returns(_fullTable.Object);
-            _tableCollection.Setup(x => x.Find("PartitionedModelTableName")).Returns(_partitionedTable.Object);
+            _tableCollection.Setup(x => x.Find("FullTableName")).Returns(_fullTable.Object);
+            _tableCollection.Setup(x => x.Find("PartitionedTableName")).Returns(_partitionedTable.Object);
 
             _model = new Mock<IModelWrapper>();
             _model.Setup(x => x.Tables).Returns(_tableCollection.Object);
@@ -93,16 +96,13 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _serverFactory = new Mock<IServerWrapperFactory>();
             _serverFactory.Setup(x => x.Create()).Returns(_server.Object);
 
-            _tokenProvider = new Mock<ITokenProvider>();
-            _tokenProvider.Setup(x => x.CreateAsync(It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(new Token
-                {
-                    AccessToken = "AnalysisServicesToken"
-                }));
+            _connectionString = new Mock<IConnectionString>();
+            _connectionString.Setup(x => x.GetAsync(It.IsAny<ModelConfiguration>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult("ConnectionString"));
 
-            _tokenProviderFactory = new Mock<ITokenProviderFactory>();
-            _tokenProviderFactory.Setup(x => x.CreateAnalysisServicesTokenProvider(It.IsAny<ModelConfiguration>()))
-                .Returns(_tokenProvider.Object);
+            _connectionStringFactory = new Mock<IConnectionStringFactory>();
+            _connectionStringFactory.Setup(x => x.Create(It.IsAny<string>()))
+                .Returns(_connectionString.Object);
 
             _fullRefresh = new Mock<IRefresh>();
 
@@ -123,7 +123,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
 
             _sut = new TransactionalModelProcessor(
                 _serverFactory.Object,
-                _tokenProviderFactory.Object,
+                _connectionStringFactory.Object,
                 _refreshFactory.Object,
                 _dataSourceFactory.Object,
                 _logger.Object);
@@ -139,11 +139,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public async Task TestConnectsToServerWithModelConnectionString()
         {
-            var expected =
-                $"Data Source={_configuration.ServerName};Password=AnalysisServicesToken;Provider=MSOLAP;";
-
             await _sut.ProcessAsync(_configuration);
-            _server.Verify(x => x.Connect(expected));
+            _server.Verify(x => x.Connect("ConnectionString"));
         }
 
         [TestMethod]
@@ -161,10 +158,17 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         }
 
         [TestMethod]
-        public async Task TestGetsAnalysisServicesTokenUsingModel()
+        public async Task TestGetsConnectionStringUsingServerName()
         {
             await _sut.ProcessAsync(_configuration);
-            _tokenProviderFactory.Verify(x => x.CreateAnalysisServicesTokenProvider(_configuration));
+            _connectionStringFactory.Verify(x => x.Create(_configuration.ServerName));
+        }
+
+        [TestMethod]
+        public async Task TestGetsConnectionStringUsingModelConfiguration()
+        {
+            await _sut.ProcessAsync(_configuration);
+            _connectionString.Verify(x => x.GetAsync(_configuration, It.IsAny<CancellationToken>()));
         }
 
         [TestMethod]
@@ -175,10 +179,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         }
 
         [TestMethod]
-        public async Task TestLogsGetAnalysisServicesAuthenticationToken()
+        public async Task TestLogsGetConnectionString()
         {
             await _sut.ProcessAsync(_configuration);
-            _logger.Verify(x => x.Info("Retrieved Analysis Services authentication token."));
+            _logger.Verify(x => x.Info("Retrieved connection string."));
         }
 
         [TestMethod]

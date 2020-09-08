@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,35 +33,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.AnalysisServices, Version=18.0.9.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.18.0.9\lib\net45\Microsoft.AnalysisServices.dll</HintPath>
+    <Reference Include="Microsoft.AnalysisServices, Version=19.9.0.1, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.19.9.0.1\lib\net45\Microsoft.AnalysisServices.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AnalysisServices.AdomdClient, Version=18.0.9.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AnalysisServices.AdomdClient.retail.amd64.18.0.9\lib\net45\Microsoft.AnalysisServices.AdomdClient.dll</HintPath>
+    <Reference Include="Microsoft.AnalysisServices.AdomdClient, Version=19.9.0.1, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AnalysisServices.AdomdClient.retail.amd64.19.9.0.1\lib\net45\Microsoft.AnalysisServices.AdomdClient.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AnalysisServices.Core, Version=18.0.9.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.18.0.9\lib\net45\Microsoft.AnalysisServices.Core.dll</HintPath>
+    <Reference Include="Microsoft.AnalysisServices.Core, Version=19.9.0.1, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.19.9.0.1\lib\net45\Microsoft.AnalysisServices.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AnalysisServices.SPClient.Interfaces, Version=18.0.9.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.18.0.9\lib\net45\Microsoft.AnalysisServices.SPClient.Interfaces.dll</HintPath>
+    <Reference Include="Microsoft.AnalysisServices.SPClient.Interfaces, Version=19.9.0.1, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.19.9.0.1\lib\net45\Microsoft.AnalysisServices.SPClient.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AnalysisServices.Tabular, Version=18.0.9.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.18.0.9\lib\net45\Microsoft.AnalysisServices.Tabular.dll</HintPath>
+    <Reference Include="Microsoft.AnalysisServices.Tabular, Version=19.9.0.1, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.19.9.0.1\lib\net45\Microsoft.AnalysisServices.Tabular.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AnalysisServices.Tabular.Json, Version=18.0.9.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.18.0.9\lib\net45\Microsoft.AnalysisServices.Tabular.Json.dll</HintPath>
+    <Reference Include="Microsoft.AnalysisServices.Tabular.Json, Version=19.9.0.1, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AnalysisServices.retail.amd64.19.9.0.1\lib\net45\Microsoft.AnalysisServices.Tabular.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault, Version=3.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.3.0.4\lib\net461\Microsoft.Azure.KeyVault.dll</HintPath>
+    <Reference Include="Microsoft.Azure.KeyVault, Version=3.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.3.0.5\lib\net461\Microsoft.Azure.KeyVault.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.WebKey, Version=3.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.WebKey.3.0.4\lib\net461\Microsoft.Azure.KeyVault.WebKey.dll</HintPath>
+    <Reference Include="Microsoft.Azure.KeyVault.WebKey, Version=3.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.WebKey.3.0.5\lib\net461\Microsoft.Azure.KeyVault.WebKey.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.5.2.3\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=5.2.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.5.2.8\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.2.3.20\lib\net461\Microsoft.Rest.ClientRuntime.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.2.3.21\lib\net461\Microsoft.Rest.ClientRuntime.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Rest.ClientRuntime.Azure, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Rest.ClientRuntime.Azure.3.3.19\lib\net461\Microsoft.Rest.ClientRuntime.Azure.dll</HintPath>
@@ -70,10 +72,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.7\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.4\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -82,13 +84,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -142,7 +144,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -151,8 +153,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Net.Http.WinHttpHandler, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.WinHttpHandler.4.6.0\lib\net461\System.Net.Http.WinHttpHandler.dll</HintPath>
+    <Reference Include="System.Net.Http.WinHttpHandler, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.WinHttpHandler.4.7.2\lib\net461\System.Net.Http.WinHttpHandler.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
@@ -160,8 +162,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
@@ -173,11 +175,11 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.1\lib\net462\System.Runtime.Extensions.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -214,7 +216,7 @@
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.RegularExpressions.4.3.0\lib\net463\System.Text.RegularExpressions.dll</HintPath>
+      <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -226,47 +228,56 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLL\AnalysisServicesCertificateTokenProvider.cs" />
-    <Compile Include="BLL\AnalysisServicesClientSecretTokenProvider.cs" />
-    <Compile Include="BLL\BaseCertificateTokenProvider.cs" />
-    <Compile Include="BLL\BaseClientSecretTokenProvider.cs" />
-    <Compile Include="BLL\BaseModelProcessor.cs" />
-    <Compile Include="BLL\NonTransactionalModelProcessor.cs" />
-    <Compile Include="BLL\SqlServerOAuthDataSource.cs" />
-    <Compile Include="BLL\PartitionedRefresh.cs" />
-    <Compile Include="BLL\FullRefresh.cs" />
-    <Compile Include="BLL\PassthroughDataSource.cs" />
-    <Compile Include="BLL\SqlServerOAuthCertificateTokenProvider.cs" />
-    <Compile Include="BLL\SqlServerOAuthClientSecretTokenProvider.cs" />
-    <Compile Include="BLL\TransactionalModelProcessor.cs" />
-    <Compile Include="Enums\AuthenticationType.cs" />
-    <Compile Include="Enums\DataSourceType.cs" />
-    <Compile Include="Enums\ModelProcessorType.cs" />
-    <Compile Include="Factories\DataSourceFactory.cs" />
-    <Compile Include="Factories\PartitionWrapperFactory.cs" />
-    <Compile Include="Factories\ModelProcessorFactory.cs" />
-    <Compile Include="Helpers\AuthenticationHelpers.cs" />
-    <Compile Include="Interfaces\IDataSource.cs" />
-    <Compile Include="Interfaces\IDataSourceFactory.cs" />
-    <Compile Include="Interfaces\IPartitionWrapperFactory.cs" />
-    <Compile Include="Interfaces\IModelProcessor.cs" />
-    <Compile Include="Interfaces\ITokenProviderFactory.cs" />
-    <Compile Include="Factories\TokenProviderFactory.cs" />
-    <Compile Include="Interfaces\IRefreshFactory.cs" />
-    <Compile Include="Factories\RefreshFactory.cs" />
-    <Compile Include="Factories\ServerWrapperFactory.cs" />
-    <Compile Include="Interfaces\IPartitionCollectionWrapper.cs" />
-    <Compile Include="Interfaces\IRefresh.cs" />
-    <Compile Include="Interfaces\IServerWrapperFactory.cs" />
-    <Compile Include="Interfaces\IServerWrapper.cs" />
-    <Compile Include="Interfaces\ITokenProvider.cs" />
+    <Compile Include="ConnectionStrings\PowerBiConnectionString.cs" />
+    <Compile Include="ConnectionStrings\AnalysisServicesConnectionString.cs" />
+    <Compile Include="Credentials\Credential.cs" />
+    <Compile Include="Credentials\CredentialFactory.cs" />
+    <Compile Include="Credentials\ICredential.cs" />
+    <Compile Include="Credentials\ICredentialFactory.cs" />
+    <Compile Include="Tokens\Token.cs" />
+    <Compile Include="ModelProcessors\BaseModelProcessor.cs" />
+    <Compile Include="KeyVaults\CertificateKeyVault.cs" />
+    <Compile Include="KeyVaults\ClientSecretKeyVault.cs" />
+    <Compile Include="ModelProcessors\NonTransactionalModelProcessor.cs" />
+    <Compile Include="DataSources\SqlServerOAuthDataSource.cs" />
+    <Compile Include="Refreshes\PartitionedRefresh.cs" />
+    <Compile Include="Refreshes\FullRefresh.cs" />
+    <Compile Include="DataSources\PassthroughDataSource.cs" />
+    <Compile Include="ModelProcessors\TransactionalModelProcessor.cs" />
+    <Compile Include="KeyVaults\AuthenticationType.cs" />
+    <Compile Include="DataSources\DataSourceType.cs" />
+    <Compile Include="ModelProcessors\ModelProcessorType.cs" />
+    <Compile Include="ConnectionStrings\ConnectionStringFactory.cs" />
+    <Compile Include="DataSources\DataSourceFactory.cs" />
+    <Compile Include="ConnectionStrings\IConnectionStringFactory.cs" />
+    <Compile Include="Tokens\TokenFactory.cs" />
+    <Compile Include="ConnectionStrings\IConnectionString.cs" />
+    <Compile Include="KeyVaults\IKeyVaultFactory.cs" />
+    <Compile Include="Wrappers\PartitionWrapperFactory.cs" />
+    <Compile Include="ModelProcessors\ModelProcessorFactory.cs" />
+    <Compile Include="DataSources\IDataSource.cs" />
+    <Compile Include="DataSources\IDataSourceFactory.cs" />
+    <Compile Include="KeyVaults\IKeyVault.cs" />
+    <Compile Include="Wrappers\IPartitionWrapperFactory.cs" />
+    <Compile Include="ModelProcessors\IModelProcessor.cs" />
+    <Compile Include="Tokens\ITokenFactory.cs" />
+    <Compile Include="KeyVaults\KeyVaultFactory.cs" />
+    <Compile Include="Refreshes\IRefreshFactory.cs" />
+    <Compile Include="Refreshes\RefreshFactory.cs" />
+    <Compile Include="Wrappers\ServerWrapperFactory.cs" />
+    <Compile Include="Wrappers\IPartitionCollectionWrapper.cs" />
+    <Compile Include="Refreshes\IRefresh.cs" />
+    <Compile Include="Wrappers\IServerWrapperFactory.cs" />
+    <Compile Include="Wrappers\IServerWrapper.cs" />
+    <Compile Include="Tokens\IToken.cs" />
     <Compile Include="Models\AuthenticationConfiguration.cs" />
+    <Compile Include="Models\ActiveDirectoryClientCredential.cs" />
     <Compile Include="Models\DataSourceConfiguration.cs" />
     <Compile Include="Models\ModelConfiguration.cs" />
     <Compile Include="Models\FullTableConfiguration.cs" />
@@ -276,15 +287,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wrappers\DatabaseCollectionWrapper.cs" />
     <Compile Include="Wrappers\DatabaseWrapper.cs" />
-    <Compile Include="Interfaces\IDatabaseCollectionWrapper.cs" />
-    <Compile Include="Interfaces\IDatabaseWrapper.cs" />
-    <Compile Include="Interfaces\IModelWrapper.cs" />
-    <Compile Include="Interfaces\IPartitionWrapper.cs" />
-    <Compile Include="Interfaces\ITableCollectionWrapper.cs" />
-    <Compile Include="Interfaces\ITableWrapper.cs" />
+    <Compile Include="Wrappers\IDatabaseCollectionWrapper.cs" />
+    <Compile Include="Wrappers\IDatabaseWrapper.cs" />
+    <Compile Include="Wrappers\IModelWrapper.cs" />
+    <Compile Include="Wrappers\IPartitionWrapper.cs" />
+    <Compile Include="Wrappers\ITableCollectionWrapper.cs" />
+    <Compile Include="Wrappers\ITableWrapper.cs" />
     <Compile Include="Wrappers\DataSourceCollectionWrapper.cs" />
-    <Compile Include="Interfaces\IDataSourceCollectionWrapper.cs" />
-    <Compile Include="Interfaces\IStructuredDataSourceWrapper.cs" />
+    <Compile Include="Wrappers\IDataSourceCollectionWrapper.cs" />
+    <Compile Include="Wrappers\IStructuredDataSourceWrapper.cs" />
     <Compile Include="Wrappers\ModelWrapper.cs" />
     <Compile Include="Wrappers\PartitionCollectionWrapper.cs" />
     <Compile Include="Wrappers\PartitionWrapper.cs" />
@@ -302,4 +313,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
 </Project>

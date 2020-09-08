@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Factories;
+using AnalysisServicesRefresh.BLL.ModelProcessors;
 using AnalysisServicesRefresh.BLL.Models;
 using AnalysisServicesRefresh.Models;
 using Newtonsoft.Json;

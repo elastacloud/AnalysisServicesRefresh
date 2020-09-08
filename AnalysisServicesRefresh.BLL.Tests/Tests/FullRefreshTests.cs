@@ -1,5 +1,5 @@
-﻿using AnalysisServicesRefresh.BLL.BLL;
-using AnalysisServicesRefresh.BLL.Interfaces;
+﻿using AnalysisServicesRefresh.BLL.Refreshes;
+using AnalysisServicesRefresh.BLL.Wrappers;
 using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

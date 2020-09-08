@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnalysisServicesRefresh.BLL.BLL;
-using AnalysisServicesRefresh.BLL.Interfaces;
 using AnalysisServicesRefresh.BLL.Models;
+using AnalysisServicesRefresh.BLL.Refreshes;
 using AnalysisServicesRefresh.BLL.Tests.Fakes;
+using AnalysisServicesRefresh.BLL.Wrappers;
 using Microsoft.AnalysisServices;
 using Microsoft.AnalysisServices.Tabular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

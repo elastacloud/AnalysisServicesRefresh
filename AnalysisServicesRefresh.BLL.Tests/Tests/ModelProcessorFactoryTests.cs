@@ -1,7 +1,5 @@
 ﻿using System;
-using AnalysisServicesRefresh.BLL.BLL;
-using AnalysisServicesRefresh.BLL.Enums;
-using AnalysisServicesRefresh.BLL.Factories;
+using AnalysisServicesRefresh.BLL.ModelProcessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using AnalysisServicesRefresh.BLL.Interfaces;
 using Microsoft.AnalysisServices.Tabular;
 
 namespace AnalysisServicesRefresh.BLL.Wrappers

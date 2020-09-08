@@ -1,5 +1,4 @@
-﻿using AnalysisServicesRefresh.BLL.Factories;
-using AnalysisServicesRefresh.BLL.Wrappers;
+﻿using AnalysisServicesRefresh.BLL.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests

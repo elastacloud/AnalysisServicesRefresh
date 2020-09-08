@@ -1,4 +1,4 @@
-﻿using AnalysisServicesRefresh.BLL.Enums;
+﻿using AnalysisServicesRefresh.BLL.DataSources;
 
 namespace AnalysisServicesRefresh.BLL.Models
 {

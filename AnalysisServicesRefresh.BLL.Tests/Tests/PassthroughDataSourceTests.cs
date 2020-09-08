@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.BLL;
-using AnalysisServicesRefresh.BLL.Interfaces;
+using AnalysisServicesRefresh.BLL.DataSources;
 using AnalysisServicesRefresh.BLL.Models;
+using AnalysisServicesRefresh.BLL.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

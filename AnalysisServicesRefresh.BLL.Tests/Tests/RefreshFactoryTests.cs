@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using AnalysisServicesRefresh.BLL.BLL;
-using AnalysisServicesRefresh.BLL.Factories;
 using AnalysisServicesRefresh.BLL.Models;
+using AnalysisServicesRefresh.BLL.Refreshes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AnalysisServicesRefresh.BLL.Tests.Tests
