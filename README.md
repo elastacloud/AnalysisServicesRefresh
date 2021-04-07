@@ -40,7 +40,7 @@ Any tables listed in "fullTables" in the JSON configuration will be fully proces
 Any table listed in "partitionedTables" in the JSON configuration processed as follows:
 - Any partitions defined in the table configuration that is not defined on the server will be created.
 - Any partitions defined on the server that is not defined in the table configuration will be deleted.
-- Any partitions marked "refresh": 1 will be fully processed.
+- Any partitions marked "refresh": 1 will be fully processed (exception is all partitions will be refreshed if only Template or DevPartition's present on server).
 
 A partitioned refresh will duplicate and rename a template M query partition named *Template* for each new partition. The template partition must have *-1* and *-2* placeholders, which will be replaced with the partition's Minimum and Maximum from the JSON configuration respectively.
 
@@ -53,7 +53,7 @@ in
     #"Filtered Rows"
 ```
 
-*Partitions named DevPartition will be ignored for development purposes.*
+*Partitions prefixed DevPartition will be ignored for development purposes.*
 
 ## Example Configurations
 
