@@ -44,8 +44,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 DataSource = new DataSourceConfiguration
                 {
                     Name = "DataSourceName",
-                    ClientIdName = "DataSourceClientId",
-                    ClientSecretName = "DataSourceClientSecret"
+                    Username = "DataSourceClientId",
+                    Password = "DataSourceClientSecret"
                 },
                 DatabaseName = "DatabaseName",
                 FullTables = new List<FullTableConfiguration>(),
@@ -55,10 +55,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
 
             _credential = new Mock<ICredential>();
             _credential.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(new ActiveDirectoryClientCredential
+                .Returns(Task.FromResult(new ClientCredential
                 {
-                    ClientId = "DataSourceClientIdFromCredential",
-                    ClientSecret = "DataSourceClientSecretFromCredential"
+                    Username = "DataSourceClientIdFromCredential",
+                    Password = "DataSourceClientSecretFromCredential"
                 }));
 
             _credentialFactory = new Mock<ICredentialFactory>();
@@ -75,7 +75,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
 
             _tokenFactory = new Mock<ITokenFactory>();
             _tokenFactory.Setup(x =>
-                    x.Create(It.IsAny<ActiveDirectoryClientCredential>(), It.IsAny<string>(), It.IsAny<string>()))
+                    x.Create(It.IsAny<ClientCredential>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(_token.Object);
 
             _logger = new Mock<ILogger>();
@@ -137,7 +137,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         {
             await _sut.ProcessAsync(_database.Object, _configuration);
             _tokenFactory.Verify(x =>
-                x.Create(It.Is<ActiveDirectoryClientCredential>(y => y.ClientId == "DataSourceClientIdFromCredential"),
+                x.Create(It.Is<ClientCredential>(y => y.Username == "DataSourceClientIdFromCredential"),
                     It.IsAny<string>(), It.IsAny<string>()));
         }
 
@@ -147,8 +147,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             await _sut.ProcessAsync(_database.Object, _configuration);
             _tokenFactory.Verify(x =>
                 x.Create(
-                    It.Is<ActiveDirectoryClientCredential>(
-                        y => y.ClientSecret == "DataSourceClientSecretFromCredential"), It.IsAny<string>(),
+                    It.Is<ClientCredential>(
+                        y => y.Password == "DataSourceClientSecretFromCredential"), It.IsAny<string>(),
                     It.IsAny<string>()));
         }
 
@@ -156,7 +156,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public async Task TestGetsSqlServerTokenUsingAuthority()
         {
             await _sut.ProcessAsync(_database.Object, _configuration);
-            _tokenFactory.Verify(x => x.Create(It.IsAny<ActiveDirectoryClientCredential>(),
+            _tokenFactory.Verify(x => x.Create(It.IsAny<ClientCredential>(),
                 $"https://login.windows.net/{_configuration.Authentication.DirectoryId}", It.IsAny<string>()));
         }
 
@@ -164,7 +164,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public async Task TestGetsSqlServerTokenUsingResource()
         {
             await _sut.ProcessAsync(_database.Object, _configuration);
-            _tokenFactory.Verify(x => x.Create(It.IsAny<ActiveDirectoryClientCredential>(), It.IsAny<string>(),
+            _tokenFactory.Verify(x => x.Create(It.IsAny<ClientCredential>(), It.IsAny<string>(),
                 "https://database.windows.net/"));
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace AnalysisServicesRefresh.BLL.KeyVaults
 {
-    public enum AuthenticationType
+    public enum KeyVaultAuthenticationType
     {
         Certificate,
         Secret

@@ -241,7 +241,7 @@
     <Compile Include="Credentials\ICredential.cs" />
     <Compile Include="Credentials\ICredentialFactory.cs" />
     <Compile Include="DataSources\UsernamePasswordDataSource.cs" />
-    <Compile Include="Models\ActiveDirectoryClientCredential.cs" />
+    <Compile Include="Models\ClientCredential.cs" />
     <Compile Include="Tokens\Token.cs" />
     <Compile Include="ModelProcessors\BaseModelProcessor.cs" />
     <Compile Include="KeyVaults\CertificateKeyVault.cs" />
@@ -252,7 +252,7 @@
     <Compile Include="Refreshes\FullRefresh.cs" />
     <Compile Include="DataSources\PassthroughDataSource.cs" />
     <Compile Include="ModelProcessors\TransactionalModelProcessor.cs" />
-    <Compile Include="KeyVaults\AuthenticationType.cs" />
+    <Compile Include="KeyVaults\KeyVaultAuthenticationType.cs" />
     <Compile Include="DataSources\DataSourceType.cs" />
     <Compile Include="ModelProcessors\ModelProcessorType.cs" />
     <Compile Include="ConnectionStrings\ConnectionStringFactory.cs" />

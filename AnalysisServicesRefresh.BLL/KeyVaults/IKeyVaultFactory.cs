@@ -2,6 +2,6 @@
 {
     public interface IKeyVaultFactory
     {
-        IKeyVault Create(AuthenticationType authenticationType, string baseUri, string clientId, string authentication);
+        IKeyVault Create(KeyVaultAuthenticationType authenticationType, string baseUri, string clientId, string authentication);
     }
 }

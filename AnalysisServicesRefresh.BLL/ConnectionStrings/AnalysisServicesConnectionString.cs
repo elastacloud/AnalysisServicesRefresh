@@ -24,11 +24,11 @@ namespace AnalysisServicesRefresh.BLL.ConnectionStrings
 
         public async Task<string> GetAsync(ModelConfiguration model, CancellationToken cancellationToken = default)
         {
-            var clientIdName = model.Authentication.AnalysisServicesClientIdName;
-            var clientSecretName = model.Authentication.AnalysisServicesClientSecretName;
+            var clientId = model.Authentication.AnalysisServicesClientId;
+            var clientSecret = model.Authentication.AnalysisServicesClientSecret;
 
             var credential = await _credentialFactory.Create(model.Authentication)
-                .GetAsync(clientIdName, clientSecretName, cancellationToken);
+                .GetAsync(clientId, clientSecret, cancellationToken);
 
             var authority = $"https://login.microsoftonline.com/{model.Authentication.DirectoryId}";
             const string resource = "https://*.asazure.windows.net/";

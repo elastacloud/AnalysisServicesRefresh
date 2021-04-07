@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.Azure.KeyVault;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
@@ -19,25 +18,25 @@ namespace AnalysisServicesRefresh.BLL.KeyVaults
             _keyVaultClientSecret = keyVaultClientSecret;
         }
 
-        public async Task<ActiveDirectoryClientCredential> GetAsync(string clientIdName, string clientSecretName,
+        public async Task<Models.ClientCredential> GetAsync(string username, string password,
             CancellationToken cancellationToken = default)
         {
             var keyVaultClient = new KeyVaultClient(async (authority, resource, s) =>
             {
                 var context = new AuthenticationContext(authority);
                 var token = await context.AcquireTokenAsync(resource,
-                    new ClientCredential(_keyVaultClientId, _keyVaultClientSecret));
+                    new Microsoft.IdentityModel.Clients.ActiveDirectory.ClientCredential(_keyVaultClientId, _keyVaultClientSecret));
                 return token.AccessToken;
             });
 
-            var clientId = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, clientIdName, cancellationToken);
-            var clientSecret = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, clientSecretName, cancellationToken);
-            await Task.WhenAll(clientId, clientSecret);
+            var usernameTask = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, username, cancellationToken);
+            var passwordTask = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, password, cancellationToken);
+            await Task.WhenAll(usernameTask, passwordTask);
 
-            return new ActiveDirectoryClientCredential
+            return new Models.ClientCredential
             {
-                ClientId = (await clientId).Value,
-                ClientSecret = (await clientSecret).Value
+                Username = (await usernameTask).Value,
+                Password = (await passwordTask).Value
             };
         }
     }

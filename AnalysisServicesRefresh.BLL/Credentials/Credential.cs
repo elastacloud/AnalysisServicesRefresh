@@ -20,18 +20,18 @@ namespace AnalysisServicesRefresh.BLL.Credentials
             _authentication = authentication;
         }
 
-        public async Task<ActiveDirectoryClientCredential> GetAsync(string clientIdName, string clientSecretName,
+        public async Task<ClientCredential> GetAsync(string username, string password,
             CancellationToken cancellationToken = default)
         {
             return _authentication.KeyVaultBaseUri == null
-                ? new ActiveDirectoryClientCredential
+                ? new ClientCredential
                 {
-                    ClientId = clientIdName,
-                    ClientSecret = clientSecretName
+                    Username = username,
+                    Password = password
                 }
-                : await _keyVaultFactory.Create(_authentication.Type, _authentication.KeyVaultBaseUri,
+                : await _keyVaultFactory.Create(_authentication.KeyVaultAuthenticationType, _authentication.KeyVaultBaseUri,
                         _authentication.KeyVaultClientId, _authentication.KeyVaultAuthentication)
-                    .GetAsync(clientIdName, clientSecretName, cancellationToken);
+                    .GetAsync(username, password, cancellationToken);
         }
     }
 }

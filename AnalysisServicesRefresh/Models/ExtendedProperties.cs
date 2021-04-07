@@ -8,17 +8,17 @@ namespace AnalysisServicesRefresh.Models
 {
     internal class ExtendedProperties
     {
-        public string AnalysisServicesClientIdName { get; set; }
-        public string AnalysisServicesClientSecretName { get; set; }
-        public AuthenticationType AuthenticationType { get; set; }
-        public string DataSourceClientIdName { get; set; }
-        public string DataSourceClientSecretName { get; set; }
+        public string AnalysisServicesClientId { get; set; }
+        public string AnalysisServicesClientSecret { get; set; }
         public string DataSourceName { get; set; }
+        public string DataSourcePassword { get; set; }
         public DataSourceType DataSourceType { get; set; }
+        public string DataSourceUsername { get; set; }
         public string DatabaseName { get; set; }
         public string DirectoryId { get; set; }
         public List<FullTableConfiguration> FullTables { get; set; }
         public string KeyVaultAuthentication { get; set; }
+        public KeyVaultAuthenticationType KeyVaultAuthenticationType { get; set; }
         public string KeyVaultBaseUri { get; set; }
         public string KeyVaultClientId { get; set; }
         public int MaxParallelism { get; set; }

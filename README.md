@@ -2,16 +2,34 @@
 
 C# .NET Framework console application to refresh an Azure Analysis Services model or [Power BI Premium dataset](https://docs.microsoft.com/en-us/power-bi/admin/service-premium-connect-tools) based on a JSON configuration, using the [Tabular Object Model](https://docs.microsoft.com/en-us/bi-reference/tom/introduction-to-the-tabular-object-model-tom-in-analysis-services-amo) API allowing for:
 1. Full refresh of tables.
-2. Creation, deletion and refresh of table partitions.
-3. Refreshing an OAuth SQL data source.
+2. Partitioned refresh of tables, including creation, deletion and refresh of table partitions.
+3. Authenticating against OAuth and UsernamePassword data sources.
 4. Recaluating model after refresh.
 
 The application can be executed standalone, or the JSON configuration structure allows for execution from Azure Data Factory v2 using a [Custom Activity](https://docs.microsoft.com/en-us/azure/data-factory/transform-data-using-dotnet-custom-activity).
 
 ## Transactional Processing
+
 Setting "modelProcessorType" in the JSON configuration:
 - To "Transactional": if a failure occurs during processing, no changes are committed to the model and an exception is thrown.
 - To "NonTransactional": if a failure occurs during processing a table, the next table will be attempted until all are attempted. If any table fails, an exception is thrown after processing indicating which have failed. The data source is renewed for each table, allowing in the case of OAuth, for longer processing time before token timeout.
+
+## Data Source
+
+Setting "dataSourceType" in the JSON configuration:
+- To "Passthrough": Ignore data source modification. Usage for data sources that are preconfigured, such as SQL Auth or PowerBI.
+- To "OAuth": Usage for Azure SQL, such as Azure SQL Database, Azure SQL Managed Instance, etc. dataSourceUsername (client id) and dataSourcePassword (client secret) associated with an AD App will authenticate as the AD app's service principal.
+- To "UsernamePassword": Usage for Username and Password authentication, such as SQL Auth, Databricks, etc. dataSourceUsername and dataSourcePassword are used for username and password.
+
+## Key Vault
+
+Setting "keyVaultBaseUri" in the JSON configuration:
+- To null: analysisServicesClientId, analysisServicesClientSecret, dataSourceUsername and dataSourcePassword are used as entered.
+- To "https://*.vault.azure.net/": analysisServicesClientId, analysisServicesClientSecret, dataSourceUsername and dataSourcePassword are retrieved from Azure Key Vault using secret names as entered.
+
+Setting "keyVaultAuthenticationType" in the JSON configuration:
+- To "Certificate": keyVaultAuthentication entered is the certificate thumbprint in My.CurrentUser associated with AD App for keyVaultClientId.
+- To "ClientSecret": keyVaultAuthentication entered is the client secret associated with AD App for keyVaultClientId.
 
 ## Full Refresh
 
@@ -39,19 +57,18 @@ in
 
 ## Example Configurations
 
-1. Example configuration using Key Vault via Active Directory certificate and OAuth data source authentication:
+1. Example configuration using Key Vault via Active Directory certificate authentication (with OAuth data source):
 
 ```json
 {
   "typeProperties": {
     "extendedProperties": {
-      "authenticationType": "Certificate",
-      "analysisServicesClientIdName": "AnalysisServicesClientIdInKeyVault",
-      "analysisServicesClientSecretName": "AnalysisServicesClientSecretInKeyVault",
+      "analysisServicesClientId": "AnalysisServicesClientIdInKeyVault",
+      "analysisServicesClientSecret": "AnalysisServicesClientSecretInKeyVault",
       "dataSourceName": "SQL/DataSourceServerInModel;DataSourceDatabaseInModel",
       "dataSourceType": "OAuth",
-      "dataSourceClientIdName": "AnalysisServicesDataSourceClientIdInKeyVault",
-      "dataSourceClientSecretName": "AnalysisServicesDataSourceClientSecretInKeyVault",
+      "dataSourceUsername": "AnalysisServicesDataSourceClientIdInKeyVault",
+      "dataSourcePassword": "AnalysisServicesDataSourceClientSecretInKeyVault",
       "databaseName": "AnalysisServicesModelName",
       "directoryId": "ActiveDirectoryDirectoryId",
       "fullTables": [
@@ -63,6 +80,7 @@ in
         }
       ],
       "keyVaultAuthentication": "ActiveDirectoryClientCertificateThumbprintForKeyVault",
+	  "keyVaultAuthenticationType": "Certificate",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
       "maxParallelism": 5,
@@ -121,19 +139,18 @@ in
 }
 ```
 
-2. Example configuration using Key Vault via Active Directory client id and secret and OAuth data source authentication:
+2. Example configuration using Key Vault via Active Directory client id and secret authentication (with OAuth data source):
 
 ```json
 {
   "typeProperties": {
     "extendedProperties": {
-      "authenticationType": "Secret",
-      "analysisServicesClientIdName": "AnalysisServicesClientIdInKeyVault",
-      "analysisServicesClientSecretName": "AnalysisServicesClientSecretInKeyVault",
+      "analysisServicesClientId": "AnalysisServicesClientIdInKeyVault",
+      "analysisServicesClientSecret": "AnalysisServicesClientSecretInKeyVault",
       "dataSourceName": "SQL/DataSourceServerInModel;DataSourceDatabaseInModel",
       "dataSourceType": "OAuth",
-      "dataSourceClientIdName": "AnalysisServicesDataSourceClientIdInKeyVault",
-      "dataSourceClientSecretName": "AnalysisServicesDataSourceClientSecretInKeyVault",
+      "dataSourceUsername": "AnalysisServicesDataSourceClientIdInKeyVault",
+      "dataSourcePassword": "AnalysisServicesDataSourceClientSecretInKeyVault",
       "databaseName": "AnalysisServicesModelName",
       "directoryId": "ActiveDirectoryDirectoryId",
       "fullTables": [
@@ -145,6 +162,7 @@ in
         }
       ],
       "keyVaultAuthentication": "ActiveDirectoryClientSecretForKeyVault",
+	  "keyVaultAuthenticationType": "Secret",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
       "maxParallelism": 5,
@@ -203,19 +221,18 @@ in
 }
 ```
 
-3. Example configuration using Active Directory client id and secret and OAuth data source authentication:
+3. Example configuration using Active Directory client id and secret authentication without Key Vault (with OAuth data source):
 
 ```json
 {
   "typeProperties": {
     "extendedProperties": {
-      "authenticationType": "Secret",
-      "analysisServicesClientIdName": "AnalysisServicesClientId",
-      "analysisServicesClientSecretName": "AnalysisServicesClientSecret",
+      "analysisServicesClientId": "AnalysisServicesClientId",
+      "analysisServicesClientSecret": "AnalysisServicesClientSecret",
       "dataSourceName": "SQL/DataSourceServerInModel;DataSourceDatabaseInModel",
       "dataSourceType": "OAuth",
-      "dataSourceClientIdName": "AnalysisServicesDataSourceClientId",
-      "dataSourceClientSecretName": "AnalysisServicesDataSourceClientSecret",
+      "dataSourceUsername": "AnalysisServicesDataSourceClientId",
+      "dataSourcePassword": "AnalysisServicesDataSourceClientSecret",
       "databaseName": "AnalysisServicesModelName",
       "directoryId": "ActiveDirectoryDirectoryId",
       "fullTables": [
@@ -227,6 +244,7 @@ in
         }
       ],
       "keyVaultAuthentication": null,
+      "keyVaultAuthenticationType": "Secret",
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
       "maxParallelism": 5,
@@ -285,19 +303,18 @@ in
 }
 ```
 
-4. Example configuration using Active Directory client id and secret and SQL data source authentication:
+4. Example configuration using Active Directory client id and secret and Passthrough data source authentication (with Passthrough data source):
 
 ```json
 {
   "typeProperties": {
     "extendedProperties": {
-      "authenticationType": "Secret",
-      "analysisServicesClientIdName": "AnalysisServicesClientId",
-      "analysisServicesClientSecretName": "AnalysisServicesClientSecret",
+      "analysisServicesClientId": "AnalysisServicesClientId",
+      "analysisServicesClientSecret": "AnalysisServicesClientSecret",
       "dataSourceName": null,
       "dataSourceType": "Passthrough",
-      "dataSourceClientIdName": null,
-      "dataSourceClientSecretName": null,
+      "dataSourceUsername": null,
+      "dataSourcePassword": null,
       "databaseName": "AnalysisServicesModelName",
       "directoryId": "ActiveDirectoryDirectoryId",
       "fullTables": [
@@ -309,6 +326,7 @@ in
         }
       ],
       "keyVaultAuthentication": null,
+	  "keyVaultAuthenticationType": "Secret",
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
       "maxParallelism": 5,

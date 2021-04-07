@@ -8,10 +8,10 @@ namespace AnalysisServicesRefresh.BLL.Tokens
     public class Token : IToken
     {
         private readonly string _authority;
-        private readonly ActiveDirectoryClientCredential _credential;
+        private readonly Models.ClientCredential _credential;
         private readonly string _resource;
 
-        public Token(ActiveDirectoryClientCredential credential, string authority, string resource)
+        public Token(Models.ClientCredential credential, string authority, string resource)
         {
             _credential = credential;
             _authority = authority;
@@ -22,7 +22,7 @@ namespace AnalysisServicesRefresh.BLL.Tokens
         {
             var context = new AuthenticationContext(_authority);
             var token = await context.AcquireTokenAsync(_resource,
-                new ClientCredential(_credential.ClientId, _credential.ClientSecret));
+                new Microsoft.IdentityModel.Clients.ActiveDirectory.ClientCredential(_credential.Username, _credential.Password));
 
             return new Models.Token
             {

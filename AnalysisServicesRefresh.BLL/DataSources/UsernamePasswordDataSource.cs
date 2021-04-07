@@ -51,17 +51,17 @@ namespace AnalysisServicesRefresh.BLL.DataSources
         private async Task<Credential> GetCredential(ModelConfiguration model,
             CancellationToken cancellationToken)
         {
-            var clientIdName = model.DataSource.ClientIdName;
-            var clientSecretName = model.DataSource.ClientSecretName;
+            var username = model.DataSource.Username;
+            var password = model.DataSource.Password;
 
             var credential = await _credentialFactory.Create(model.Authentication)
-                .GetAsync(clientIdName, clientSecretName, cancellationToken);
+                .GetAsync(username, password, cancellationToken);
 
             return new Credential
             {
                 AuthenticationKind = AuthenticationKind.UsernamePassword,
-                Password = credential.ClientSecret,
-                Username = credential.ClientId
+                Password = credential.Password,
+                Username = credential.Username
             };
         }
     }

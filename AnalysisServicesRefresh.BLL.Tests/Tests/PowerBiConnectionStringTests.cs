@@ -25,8 +25,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 Authentication = new AuthenticationConfiguration
                 {
                     DirectoryId = "DirectoryId",
-                    AnalysisServicesClientIdName = "PowerBiClientId",
-                    AnalysisServicesClientSecretName = "PowerBiClientSecret"
+                    AnalysisServicesClientId = "PowerBiClientId",
+                    AnalysisServicesClientSecret = "PowerBiClientSecret"
                 },
                 DataSource = new DataSourceConfiguration(),
                 DatabaseName = "DatabaseName",
@@ -37,10 +37,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
 
             _credential = new Mock<ICredential>();
             _credential.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(new ActiveDirectoryClientCredential
+                .Returns(Task.FromResult(new ClientCredential
                 {
-                    ClientId = "PowerBiClientIdFromCredential",
-                    ClientSecret = "PowerBiClientSecretFromCredential"
+                    Username = "PowerBiClientIdFromCredential",
+                    Password = "PowerBiClientSecretFromCredential"
                 }));
 
             _credentialFactory = new Mock<ICredentialFactory>();

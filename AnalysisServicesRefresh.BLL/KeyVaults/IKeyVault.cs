@@ -6,7 +6,7 @@ namespace AnalysisServicesRefresh.BLL.KeyVaults
 {
     public interface IKeyVault
     {
-        Task<ActiveDirectoryClientCredential> GetAsync(string clientIdName, string clientSecretName,
+        Task<ClientCredential> GetAsync(string username, string password,
             CancellationToken cancellationToken = default);
     }
 }

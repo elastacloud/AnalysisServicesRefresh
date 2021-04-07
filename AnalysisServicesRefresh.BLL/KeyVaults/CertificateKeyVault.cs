@@ -3,7 +3,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using AnalysisServicesRefresh.BLL.Models;
 using Microsoft.Azure.KeyVault;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
@@ -22,7 +21,7 @@ namespace AnalysisServicesRefresh.BLL.KeyVaults
             _keyVaultThumbprint = keyVaultThumbprint;
         }
 
-        public async Task<ActiveDirectoryClientCredential> GetAsync(string clientIdName, string clientSecretName,
+        public async Task<Models.ClientCredential> GetAsync(string username, string password,
             CancellationToken cancellationToken = default)
         {
             var certificate = GetCertificate(_keyVaultThumbprint);
@@ -35,14 +34,14 @@ namespace AnalysisServicesRefresh.BLL.KeyVaults
                 return token.AccessToken;
             });
 
-            var clientId = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, clientIdName, cancellationToken);
-            var clientSecret = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, clientSecretName, cancellationToken);
-            await Task.WhenAll(clientId, clientSecret);
+            var usernameTask = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, username, cancellationToken);
+            var passwordTask = keyVaultClient.GetSecretAsync(_keyVaultBaseUri, password, cancellationToken);
+            await Task.WhenAll(usernameTask, passwordTask);
 
-            return new ActiveDirectoryClientCredential
+            return new Models.ClientCredential
             {
-                ClientId = (await clientId).Value,
-                ClientSecret = (await clientSecret).Value
+                Username = (await usernameTask).Value,
+                Password = (await passwordTask).Value
             };
         }
 

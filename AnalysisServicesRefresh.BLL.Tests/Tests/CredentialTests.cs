@@ -28,14 +28,14 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
 
             _keyVault = new Mock<IKeyVault>();
             _keyVault.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(new ActiveDirectoryClientCredential
+                .Returns(Task.FromResult(new ClientCredential
                 {
-                    ClientId = "DataSourceClientIdFromKeyVault",
-                    ClientSecret = "DataSourceClientSecretFromKeyVault"
+                    Username = "DataSourceClientIdFromKeyVault",
+                    Password = "DataSourceClientSecretFromKeyVault"
                 }));
 
             _keyVaultFactory = new Mock<IKeyVaultFactory>();
-            _keyVaultFactory.Setup(x => x.Create(It.IsAny<AuthenticationType>(), It.IsAny<string>(), It.IsAny<string>(),
+            _keyVaultFactory.Setup(x => x.Create(It.IsAny<KeyVaultAuthenticationType>(), It.IsAny<string>(), It.IsAny<string>(),
                     It.IsAny<string>()))
                 .Returns(_keyVault.Object);
 
@@ -48,7 +48,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _configuration.KeyVaultBaseUri = null;
             await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
             _keyVaultFactory.Verify(
-                x => x.Create(It.IsAny<AuthenticationType>(), It.IsAny<string>(), It.IsAny<string>(),
+                x => x.Create(It.IsAny<KeyVaultAuthenticationType>(), It.IsAny<string>(), It.IsAny<string>(),
                     It.IsAny<string>()), Times.Never);
         }
 
@@ -57,7 +57,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         {
             await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
             _keyVaultFactory.Verify(
-                x => x.Create(It.IsAny<AuthenticationType>(), It.IsAny<string>(), It.IsAny<string>(),
+                x => x.Create(It.IsAny<KeyVaultAuthenticationType>(), It.IsAny<string>(), It.IsAny<string>(),
                     It.IsAny<string>()), Times.Once);
         }
 
@@ -67,8 +67,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
             _configuration.KeyVaultBaseUri = null;
             var actual = await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
 
-            Assert.AreEqual("DataSourceClientId", actual.ClientId);
-            Assert.AreEqual("DataSourceClientSecret", actual.ClientSecret);
+            Assert.AreEqual("DataSourceClientId", actual.Username);
+            Assert.AreEqual("DataSourceClientSecret", actual.Password);
         }
 
         [TestMethod]
@@ -76,14 +76,14 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         {
             await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
             _keyVaultFactory.Verify(x =>
-                x.Create(_configuration.Type, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+                x.Create(_configuration.KeyVaultAuthenticationType, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [TestMethod]
         public async Task TestGetsCredentialsFromKeyVaultUsingBaseUri()
         {
             await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
-            _keyVaultFactory.Verify(x => x.Create(It.IsAny<AuthenticationType>(), _configuration.KeyVaultBaseUri,
+            _keyVaultFactory.Verify(x => x.Create(It.IsAny<KeyVaultAuthenticationType>(), _configuration.KeyVaultBaseUri,
                 It.IsAny<string>(), It.IsAny<string>()));
         }
 
@@ -91,7 +91,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public async Task TestGetsCredentialsFromKeyVaultUsingClientId()
         {
             await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
-            _keyVaultFactory.Verify(x => x.Create(It.IsAny<AuthenticationType>(), It.IsAny<string>(),
+            _keyVaultFactory.Verify(x => x.Create(It.IsAny<KeyVaultAuthenticationType>(), It.IsAny<string>(),
                 _configuration.KeyVaultClientId, It.IsAny<string>()));
         }
 
@@ -99,7 +99,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public async Task TestGetsCredentialsFromKeyVaultUsingAuthentication()
         {
             await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
-            _keyVaultFactory.Verify(x => x.Create(It.IsAny<AuthenticationType>(), It.IsAny<string>(),
+            _keyVaultFactory.Verify(x => x.Create(It.IsAny<KeyVaultAuthenticationType>(), It.IsAny<string>(),
                 It.IsAny<string>(), _configuration.KeyVaultAuthentication));
         }
 
@@ -123,8 +123,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         {
             var actual = await _sut.GetAsync("DataSourceClientId", "DataSourceClientSecret");
 
-            Assert.AreEqual("DataSourceClientIdFromKeyVault", actual.ClientId);
-            Assert.AreEqual("DataSourceClientSecretFromKeyVault", actual.ClientSecret);
+            Assert.AreEqual("DataSourceClientIdFromKeyVault", actual.Username);
+            Assert.AreEqual("DataSourceClientSecretFromKeyVault", actual.Password);
         }
     }
 }

@@ -4,6 +4,6 @@ namespace AnalysisServicesRefresh.BLL.Tokens
 {
     public interface ITokenFactory
     {
-        IToken Create(ActiveDirectoryClientCredential credential, string authority, string resource);
+        IToken Create(ClientCredential credential, string authority, string resource);
     }
 }

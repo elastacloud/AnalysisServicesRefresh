@@ -19,14 +19,14 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public void TestCreatesCertificateKeyVault()
         {
-            var actual = _sut.Create(AuthenticationType.Certificate, "", "", "");
+            var actual = _sut.Create(KeyVaultAuthenticationType.Certificate, "", "", "");
             Assert.IsInstanceOfType(actual, typeof(CertificateKeyVault));
         }
 
         [TestMethod]
         public void TestCreatesClientSecretKeyVault()
         {
-            var actual = _sut.Create(AuthenticationType.Secret, "", "", "");
+            var actual = _sut.Create(KeyVaultAuthenticationType.Secret, "", "", "");
             Assert.IsInstanceOfType(actual, typeof(ClientSecretKeyVault));
         }
 
@@ -34,7 +34,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public void ThrowsInvalidOperationExceptionWhenAuthenticationTypeIsUnknown()
         {
             Assert.ThrowsException<InvalidOperationException>(() =>
-                _sut.Create((AuthenticationType) 99, "", "", ""));
+                _sut.Create((KeyVaultAuthenticationType) 99, "", "", ""));
         }
     }
 }

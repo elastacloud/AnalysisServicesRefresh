@@ -4,7 +4,7 @@ namespace AnalysisServicesRefresh.BLL.Tokens
 {
     public class TokenFactory : ITokenFactory
     {
-        public IToken Create(ActiveDirectoryClientCredential credential, string authority, string resource)
+        public IToken Create(ClientCredential credential, string authority, string resource)
         {
             return new Token(credential, authority, resource);
         }

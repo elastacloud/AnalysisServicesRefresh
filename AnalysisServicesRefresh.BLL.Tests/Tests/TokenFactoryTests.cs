@@ -20,7 +20,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         [TestMethod]
         public void TestCreatesToken()
         {
-            var actual = _sut.Create(It.IsAny<ActiveDirectoryClientCredential>(), It.IsAny<string>(),
+            var actual = _sut.Create(It.IsAny<ClientCredential>(), It.IsAny<string>(),
                 It.IsAny<string>());
             Assert.IsInstanceOfType(actual, typeof(Token));
         }

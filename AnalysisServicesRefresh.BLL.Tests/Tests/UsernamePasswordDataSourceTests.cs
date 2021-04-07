@@ -39,8 +39,8 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 DataSource = new DataSourceConfiguration
                 {
                     Name = "DataSourceName",
-                    ClientIdName = "DataSourceClientId",
-                    ClientSecretName = "DataSourceClientSecret"
+                    Username = "DataSourceClientId",
+                    Password = "DataSourceClientSecret"
                 },
                 DatabaseName = "DatabaseName",
                 FullTables = new List<FullTableConfiguration>(),
@@ -50,10 +50,10 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
 
             _credential = new Mock<ICredential>();
             _credential.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(new ActiveDirectoryClientCredential
+                .Returns(Task.FromResult(new ClientCredential
                 {
-                    ClientId = "DataSourceClientIdFromCredential",
-                    ClientSecret = "DataSourceClientSecretFromCredential"
+                    Username = "DataSourceClientIdFromCredential",
+                    Password = "DataSourceClientSecretFromCredential"
                 }));
 
             _credentialFactory = new Mock<ICredentialFactory>();

@@ -29,9 +29,9 @@ namespace AnalysisServicesRefresh
             {
                 Authentication = new AuthenticationConfiguration
                 {
-                    AnalysisServicesClientIdName = properties.AnalysisServicesClientIdName,
-                    AnalysisServicesClientSecretName = properties.AnalysisServicesClientSecretName,
-                    Type = properties.AuthenticationType,
+                    AnalysisServicesClientId = properties.AnalysisServicesClientId,
+                    AnalysisServicesClientSecret = properties.AnalysisServicesClientSecret,
+                    KeyVaultAuthenticationType = properties.KeyVaultAuthenticationType,
                     DirectoryId = properties.DirectoryId,
                     KeyVaultAuthentication = properties.KeyVaultAuthentication,
                     KeyVaultClientId = properties.KeyVaultClientId,
@@ -39,8 +39,8 @@ namespace AnalysisServicesRefresh
                 },
                 DataSource = new DataSourceConfiguration
                 {
-                    ClientIdName = properties.DataSourceClientIdName,
-                    ClientSecretName = properties.DataSourceClientSecretName,
+                    Username = properties.DataSourceUsername,
+                    Password = properties.DataSourcePassword,
                     Name = properties.DataSourceName,
                     Type = properties.DataSourceType
                 },

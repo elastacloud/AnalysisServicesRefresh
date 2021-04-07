@@ -58,11 +58,11 @@ namespace AnalysisServicesRefresh.BLL.DataSources
         private async Task<Token> GetSqlServerToken(ModelConfiguration model,
             CancellationToken cancellationToken)
         {
-            var clientIdName = model.DataSource.ClientIdName;
-            var clientSecretName = model.DataSource.ClientSecretName;
+            var username = model.DataSource.Username;
+            var password = model.DataSource.Password;
 
             var credential = await _credentialFactory.Create(model.Authentication)
-                .GetAsync(clientIdName, clientSecretName, cancellationToken);
+                .GetAsync(username, password, cancellationToken);
 
             var authority = $"https://login.windows.net/{model.Authentication.DirectoryId}";
             const string resource = "https://database.windows.net/";

@@ -20,14 +20,14 @@ namespace AnalysisServicesRefresh.BLL.ConnectionStrings
 
         public async Task<string> GetAsync(ModelConfiguration model, CancellationToken cancellationToken = default)
         {
-            var clientIdName = model.Authentication.AnalysisServicesClientIdName;
-            var clientSecretName = model.Authentication.AnalysisServicesClientSecretName;
+            var clientId = model.Authentication.AnalysisServicesClientId;
+            var clientSecret = model.Authentication.AnalysisServicesClientSecret;
 
             var credential = await _credentialFactory.Create(model.Authentication)
-                .GetAsync(clientIdName, clientSecretName, cancellationToken);
+                .GetAsync(clientId, clientSecret, cancellationToken);
 
             return
-                $"Data Source={model.ServerName};User ID=app:{credential.ClientId}@{model.Authentication.DirectoryId};Password={credential.ClientSecret};";
+                $"Data Source={model.ServerName};User ID=app:{credential.Username}@{model.Authentication.DirectoryId};Password={credential.Password};";
         }
     }
 }
