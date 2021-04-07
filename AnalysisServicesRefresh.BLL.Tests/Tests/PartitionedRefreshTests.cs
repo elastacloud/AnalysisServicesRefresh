@@ -83,6 +83,12 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                 },
                 new FakePartitionWrapper
                 {
+                    Name = "DevPartition2",
+                    Source = new MPartitionSource
+                        {Expression = "M Expression Where DateKey >= 20190201 AND DateKey <= 20190301"}
+                },
+                new FakePartitionWrapper
+                {
                     Name = "20190801",
                     Source = new MPartitionSource
                         {Expression = "M Expression Where DateKey >= 20190801 AND DateKey <= 20190831"}
@@ -149,6 +155,13 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         {
             _sut.Refresh(_table.Object);
             Assert.IsTrue(_partitionCollection.Object.Any(x => x.Name == "DevPartition"));
+        }
+
+        [TestMethod]
+        public void TestDoesNotRemoveAnyPartitionStartingDevPartition()
+        {
+            _sut.Refresh(_table.Object);
+            Assert.IsTrue(_partitionCollection.Object.Any(x => x.Name == "DevPartition2"));
         }
 
 
@@ -266,16 +279,38 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         public void TestRefreshesAllNewPartitionsIfTableIsEmpty()
         {
             _partitionCollection.Object
-                .Where(x => x.Name != "Template" && x.Name != "DevPartition")
+                .Where(x => x.Name != "Template" && !x.Name.StartsWith("DevPartition"))
                 .ToList()
                 .ForEach(x => _partitionCollection.Object.Remove(x));
 
             _sut.Refresh(_table.Object);
 
             Assert.IsTrue(_partitionCollection.Object
-                .Where(x => x.Name != "Template" && x.Name != "DevPartition")
+                .Where(x => x.Name != "Template" && !x.Name.StartsWith("DevPartition"))
                 .All(x => ((FakePartitionWrapper) x).RefreshType == RefreshType.Full)
             );
+        }
+
+        [TestMethod]
+        public void TestThrowArgumentExceptionWhenTemplateIsMissingMinusOne()
+        {
+            _templatePartition.Source = new MPartitionSource
+            {
+                Expression = "SELECT * FROM MyTable WHERE DateKey >= -0 AND DateKey <= -2"
+            };
+
+            Assert.ThrowsException<ArgumentException>(() => _sut.Refresh(_table.Object));
+        }
+
+        [TestMethod]
+        public void TestThrowArgumentExceptionWhenTemplateIsMissingMinusTwo()
+        {
+            _templatePartition.Source = new MPartitionSource
+            {
+                Expression = "SELECT * FROM MyTable WHERE DateKey >= -1 AND DateKey <= -0"
+            };
+
+            Assert.ThrowsException<ArgumentException>(() => _sut.Refresh(_table.Object));
         }
     }
 }

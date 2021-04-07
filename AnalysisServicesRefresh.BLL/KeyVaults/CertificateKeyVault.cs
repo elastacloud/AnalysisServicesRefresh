@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,6 +56,14 @@ namespace AnalysisServicesRefresh.BLL.KeyVaults
                     .FirstOrDefault(x => x.Thumbprint == thumbprint);
 
                 store.Close();
+
+                if (certificate == null)
+                {
+                    var certificates = store.Certificates.OfType<X509Certificate2>().Select(x => x.Thumbprint);
+
+                    throw new InvalidOperationException(
+                        $"Certificate with thumbprint {thumbprint} not found in My CurrentUser. Certificates found in My CurrentUser: {string.Join(", ", certificates)}");
+                }
 
                 return certificate;
             }

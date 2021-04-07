@@ -59,6 +59,7 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
                         Name = "FullTableName"
                     }
                 },
+                MaxParallelism = 5,
                 PartitionedTables = new List<PartitionedTableConfiguration>
                 {
                     new PartitionedTableConfiguration

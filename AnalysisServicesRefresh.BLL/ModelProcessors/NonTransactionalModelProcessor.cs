@@ -94,7 +94,7 @@ namespace AnalysisServicesRefresh.BLL.ModelProcessors
                         refreshPlan.Refresh.Refresh(table);
 
                         Logger.Info($"Saving {refreshPlan.Table}.");
-                        database.Model.SaveChanges(new SaveOptions {MaxParallelism = 5});
+                        database.Model.SaveChanges(new SaveOptions {MaxParallelism = model.MaxParallelism});
                     }
                     finally
                     {

@@ -30,6 +30,13 @@ namespace AnalysisServicesRefresh.BLL.Tests.Tests
         }
 
         [TestMethod]
+        public void TestCreatesUsernamePasswordDataSource()
+        {
+            var actual = _sut.Create(DataSourceType.UsernamePassword);
+            Assert.IsInstanceOfType(actual, typeof(UsernamePasswordDataSource));
+        }
+
+        [TestMethod]
         public void TestThrowsInvalidOperationExceptionWhenDataSourceTypeIsUnknown()
         {
             Assert.ThrowsException<InvalidOperationException>(() => _sut.Create((DataSourceType) 99));

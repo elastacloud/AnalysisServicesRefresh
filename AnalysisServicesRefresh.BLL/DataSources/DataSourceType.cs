@@ -3,6 +3,7 @@
     public enum DataSourceType
     {
         OAuth,
-        Passthrough
+        Passthrough,
+        UsernamePassword
     }
 }

@@ -40,7 +40,8 @@ namespace AnalysisServicesRefresh.BLL.Refreshes
 
             _logger.Info($"Requesting partitioned refresh for table {table.Name}.");
 
-            _initial = _table.Partitions.All(x => x.Name == TemplatePartitionName || x.Name == DevPartitionName);
+            _initial = _table.Partitions.All(
+                x => x.Name == TemplatePartitionName || x.Name.StartsWith(DevPartitionName));
 
             CheckPartitionOverlaps();
             CheckExistingPartitionDefinitions();
@@ -77,6 +78,12 @@ namespace AnalysisServicesRefresh.BLL.Refreshes
 
             var templateQuery = GetPartitionQuery(template);
 
+            if (!templateQuery.Contains("-1") || !templateQuery.Contains("-2"))
+            {
+                throw new ArgumentException(
+                    $"Table {_table.Name} is missing -1 and/or -2 in {TemplatePartitionName} partition.");
+            }
+
             var sourcePartitions = PartitionedTable.Partitions.Select(x => new
             {
                 x.Name,
@@ -86,7 +93,7 @@ namespace AnalysisServicesRefresh.BLL.Refreshes
             });
 
             var destinationPartitions = _table.Partitions
-                .Where(x => x.Name != TemplatePartitionName && x.Name != DevPartitionName)
+                .Where(x => x.Name != TemplatePartitionName && !x.Name.StartsWith(DevPartitionName))
                 .Select(x => new
                 {
                     x.Name,
@@ -109,7 +116,8 @@ namespace AnalysisServicesRefresh.BLL.Refreshes
         private void RemoveOldPartitions()
         {
             var oldPartitions =
-                (from dp in _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartitionName)
+                (from dp in _table.Partitions.Where(x =>
+                        x.Name != TemplatePartitionName && !x.Name.StartsWith(DevPartitionName))
                     join sp in PartitionedTable.Partitions
                         on dp.Name equals sp.Name into lj
                     from sp in lj.DefaultIfEmpty()
@@ -126,7 +134,8 @@ namespace AnalysisServicesRefresh.BLL.Refreshes
             var template = GetPartition(TemplatePartitionName);
 
             var newPartitions = (from sp in PartitionedTable.Partitions
-                join dp in _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartitionName)
+                join dp in _table.Partitions.Where(x =>
+                        x.Name != TemplatePartitionName && !x.Name.StartsWith(DevPartitionName))
                     on sp.Name equals dp.Name into lj
                 from dp in lj.DefaultIfEmpty()
                 where dp == null
@@ -162,7 +171,8 @@ namespace AnalysisServicesRefresh.BLL.Refreshes
         private void RefreshPartitions()
         {
             var partitions = _initial
-                ? _table.Partitions.Where(x => x.Name != TemplatePartitionName && x.Name != DevPartitionName).ToList()
+                ? _table.Partitions.Where(x => x.Name != TemplatePartitionName && !x.Name.StartsWith(DevPartitionName))
+                    .ToList()
                 : (from dp in _table.Partitions
                     join sp in PartitionedTable.Partitions
                         on dp.Name equals sp.Name

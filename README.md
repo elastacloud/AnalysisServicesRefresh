@@ -65,6 +65,7 @@ in
       "keyVaultAuthentication": "ActiveDirectoryClientCertificateThumbprintForKeyVault",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
+      "maxParallelism": 5,
       "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
@@ -146,6 +147,7 @@ in
       "keyVaultAuthentication": "ActiveDirectoryClientSecretForKeyVault",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
+      "maxParallelism": 5,
       "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
@@ -227,6 +229,7 @@ in
       "keyVaultAuthentication": null,
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
+      "maxParallelism": 5,
       "modelProcessorType": "Transactional",
       "partitionedTables": [
         {
@@ -308,6 +311,7 @@ in
       "keyVaultAuthentication": null,
       "keyVaultBaseUri": null,
       "keyVaultClientId": null,
+      "maxParallelism": 5,
       "modelProcessorType": "Transactional",
       "partitionedTables": [
         {

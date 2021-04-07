@@ -46,6 +46,7 @@ namespace AnalysisServicesRefresh
                 },
                 DatabaseName = properties.DatabaseName,
                 FullTables = properties.FullTables,
+                MaxParallelism = properties.MaxParallelism,
                 ModelProcessorType = properties.ModelProcessorType,
                 PartitionedTables = properties.PartitionedTables,
                 ServerName = properties.ServerName

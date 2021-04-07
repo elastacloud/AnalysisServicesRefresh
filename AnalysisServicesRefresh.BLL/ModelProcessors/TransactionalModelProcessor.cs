@@ -58,7 +58,7 @@ namespace AnalysisServicesRefresh.BLL.ModelProcessors
                     });
 
                     Logger.Info("Saving model changes.");
-                    database.Model.SaveChanges(new SaveOptions {MaxParallelism = 5});
+                    database.Model.SaveChanges(new SaveOptions {MaxParallelism = model.MaxParallelism});
                 }
                 finally
                 {

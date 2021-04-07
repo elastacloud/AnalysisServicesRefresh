@@ -12,6 +12,8 @@ namespace AnalysisServicesRefresh.BLL.DataSources
                     return new SqlServerOAuthDataSource();
                 case DataSourceType.Passthrough:
                     return new PassthroughDataSource();
+                case DataSourceType.UsernamePassword:
+                    return new UsernamePasswordDataSource();
                 default:
                     throw new InvalidOperationException("DataSourceType is unknown.");
             }

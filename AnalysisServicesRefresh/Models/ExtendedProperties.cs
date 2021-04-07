@@ -21,6 +21,7 @@ namespace AnalysisServicesRefresh.Models
         public string KeyVaultAuthentication { get; set; }
         public string KeyVaultBaseUri { get; set; }
         public string KeyVaultClientId { get; set; }
+        public int MaxParallelism { get; set; }
         public ModelProcessorType ModelProcessorType { get; set; }
         public List<PartitionedTableConfiguration> PartitionedTables { get; set; }
         public string ServerName { get; set; }
