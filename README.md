@@ -80,7 +80,7 @@ in
         }
       ],
       "keyVaultAuthentication": "ActiveDirectoryClientCertificateThumbprintForKeyVault",
-	  "keyVaultAuthenticationType": "Certificate",
+      "keyVaultAuthenticationType": "Certificate",
       "keyVaultBaseUri": "https://keyvault.vault.azure.net/",
       "keyVaultClientId": "ActiveDirectoryClientIdForKeyVault",
       "maxParallelism": 5,
